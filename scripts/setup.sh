@@ -30,28 +30,34 @@ else
 fi
 echo ""
 
-# ── Step 2: nvm ──────────────────────────────────────────────────────────────
-echo -e "${BOLD}[2/6] Checking for nvm...${NC}"
-export NVM_DIR="$HOME/.nvm"
-if [ -s "$NVM_DIR/nvm.sh" ]; then
-  source "$NVM_DIR/nvm.sh"
-fi
-
-if ! type nvm &> /dev/null; then
-  echo -e "${YELLOW}nvm not found. Installing nvm...${NC}"
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-  echo -e "${GREEN}nvm installed.${NC}"
+# ── Step 2: Node.js ──────────────────────────────────────────────────────────
+echo -e "${BOLD}[2/6] Checking for Node.js...${NC}"
+if command -v node &> /dev/null; then
+  echo -e "${GREEN}Node.js already installed: $(node --version)${NC}"
+  echo -e "${GREEN}npm version: $(npm --version)${NC}"
 else
-  echo -e "${GREEN}nvm found: $(nvm --version)${NC}"
-fi
+  echo -e "${YELLOW}Node.js not found. Setting up nvm...${NC}"
+  export NVM_DIR="$HOME/.nvm"
+  if [ -s "$NVM_DIR/nvm.sh" ]; then
+    source "$NVM_DIR/nvm.sh" || true
+  fi
 
-echo ""
-echo -e "${BOLD}Installing Node $(cat .nvmrc) and switching to it...${NC}"
-nvm install
-nvm use
-echo -e "${GREEN}Using Node $(node --version)${NC}"
+  if ! type nvm &> /dev/null; then
+    echo -e "${YELLOW}nvm not found. Installing nvm...${NC}"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.4/install.sh | bash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+    echo -e "${GREEN}nvm installed.${NC}"
+  else
+    echo -e "${GREEN}nvm found: $(nvm --version)${NC}"
+  fi
+
+  echo ""
+  echo -e "${BOLD}Installing Node $(cat .nvmrc) and switching to it...${NC}"
+  nvm install
+  nvm use
+  echo -e "${GREEN}Using Node $(node --version)${NC}"
+fi
 echo ""
 
 # ── Step 3: npm install ───────────────────────────────────────────────────────
