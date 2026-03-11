@@ -68,20 +68,16 @@
 
 		return out;
 	}
-
 </script>
 
-{#each blocks as block, i (i)} 
-		{#if block.type === 'html'} 
-			{@html block.html}
-		{:else if block.type === 'shortcode'} 
-				{#if getComponent(block.name)} 
-					<svelte:component 
-						this={getComponent(block.name)} 
-						{...normalizeAttrs(block.attrs)} 
-					/> 
-				{:else} 
-						<!-- no matching component: silently skip --> 
-				{/if} 
-		{/if} 
+{#each blocks as block, i (i)}
+	{#if block.type === 'html'}
+		{@html block.html}
+	{:else if block.type === 'shortcode'}
+		{#if getComponent(block.name)}
+			<svelte:component this={getComponent(block.name)} {...normalizeAttrs(block.attrs)} />
+		{:else}
+			<!-- no matching component: silently skip -->
+		{/if}
+	{/if}
 {/each}
