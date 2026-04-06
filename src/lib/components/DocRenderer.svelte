@@ -21,6 +21,7 @@
 
 		// EXCLUDE this renderer itself
 		if (file === 'DocRenderer.svelte') continue;
+		console.log('Registering component:', file);
 
 		const base = file.replace(/\.svelte$/, '');
 		// @ts-expect-error — Svelte component default export

@@ -17,7 +17,7 @@ This code is in +page.svelte and can be manually coded using HTML or Svelte tags
 -->
 <header
 	class="container-fluid d-flex flex-column align-items-center justify-content-center vh-100 mb-4"
-	style="background-image:url('hero-example.png');background-size:cover;background-position:center;"
+	style="background-image:url('my-bg.png');background-size:cover;background-position:center;"
 >
 	<h1 class="text-white text-center display-1">Multimedia Template 2026</h1>
 	<p class="text-white fw-light text-center">
