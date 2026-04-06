@@ -2,13 +2,7 @@
 	import rawBlocks from '$lib/doc.blocks.json';
 	import DocRenderer from '$lib/components/DocRenderer.svelte';
 	import type { Block } from '$lib/components/DocRenderer.svelte';
-	import BumpChart from '$lib/components/BumpChart.svelte';
-
 	const blocks = rawBlocks as Block[];
-
-	// Split blocks to insert the chart after the first block (which contains the intro text/title)
-	const blocksBefore = blocks.slice(0, 1);
-	const blocksAfter = blocks.slice(1);
 </script>
 
 <!--
@@ -40,23 +34,7 @@ This code is in +page.svelte and can be manually coded using HTML or Svelte tags
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-12 col-sm-10 col-lg-8 col-xxl-6">
-			<DocRenderer blocks={blocksBefore} />
-		</div>
-	</div>
-</div>
-
-<div class="container my-5">
-	<div class="row justify-content-center">
-		<div class="col-12 col-lg-10">
-			<BumpChart />
-		</div>
-	</div>
-</div>
-
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-12 col-sm-10 col-lg-8 col-xxl-6">
-			<DocRenderer blocks={blocksAfter} />
+			<DocRenderer {blocks} />
 		</div>
 	</div>
 </div>
