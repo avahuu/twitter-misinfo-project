@@ -120,12 +120,12 @@
 						<h3 class="account-title">@{acct.account}</h3>
 					</div>
 					<div class="grid-container" style="--total-cols: {months.length};">
-						<!-- Row 1: Top brackets -->
+						<!-- Row 1: Top span annotations -->
 						<div class="corner"></div> <!-- row header spacer -->
-						<div class="bracket-top" style="grid-column: 2 / span 12; opacity: {progress >= 0.1 && progress < 0.4 ? 1 : 0};">
+						<div class="annot-arc-top" style="grid-column: 2 / span 12; opacity: {progress >= 0.1 && progress < 0.4 ? 1 : 0};">
 							<span>Election Cycle</span>
 						</div>
-						<div class="bracket-top" style="grid-column: 14 / span 11; opacity: {progress >= 0.4 && progress < 0.7 ? 1 : 0};">
+						<div class="annot-arc-top" style="grid-column: 14 / span 11; opacity: {progress >= 0.4 && progress < 0.7 ? 1 : 0};">
 							<span>Post-Inauguration</span>
 						</div>
 						<div class="corner"></div> <!-- right legend spacer -->
@@ -155,9 +155,9 @@
 								</div>
 							{/each}
 							
-							<!-- Right Bracket logic -->
+							<!-- Right Pointer Annotation -->
 							{#if dayIdx === 5}
-								<div class="bracket-right" style="grid-row: 8 / span 2; grid-column: -2 / -1; opacity: {progress >= 0.7 ? 1 : 0};">
+								<div class="annot-arc-right-curve" style="grid-row: 8 / span 2; grid-column: -2 / -1; opacity: {progress >= 0.7 ? 1 : 0};">
 									<span>Less posts<br/>during<br/>weekends</span>
 								</div>
 							{:else if dayIdx !== 6}
@@ -371,10 +371,11 @@
 		border-radius: 4px;
 	}
 
-	.bracket-top {
-		border-top: 1px solid rgba(255, 255, 255, 0.85);
-		border-left: 1px solid rgba(255, 255, 255, 0.85);
-		border-right: 1px solid rgba(255, 255, 255, 0.85);
+	.annot-arc-top {
+		border: 1px solid rgba(255, 255, 255, 0.85);
+		border-bottom: none;
+		border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+		height: 10px;
 		margin-top: 18px; 
 		margin-bottom: 2px;
 		position: relative;
@@ -384,9 +385,9 @@
 		will-change: opacity;
 	}
 
-	.bracket-top span {
+	.annot-arc-top span {
 		position: absolute;
-		top: -22px;
+		top: -24px;
 		font-family: 'Montserrat', sans-serif;
 		font-size: 0.8rem;
 		font-weight: 500;
@@ -395,11 +396,12 @@
 		white-space: nowrap;
 	}
 
-	.bracket-right {
-		border-right: 1px solid rgba(255, 255, 255, 0.85);
-		border-top: 1px solid rgba(255, 255, 255, 0.85);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.85);
-		margin-left: 5px;
+	.annot-arc-right-curve {
+		border: 1px solid rgba(255, 255, 255, 0.85);
+		border-left: none;
+		border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+		width: 10px;
+		margin-left: 6px;
 		margin-top: 2px;
 		margin-bottom: 2px;
 		position: relative;
@@ -409,9 +411,9 @@
 		will-change: opacity;
 	}
 
-	.bracket-right span {
+	.annot-arc-right-curve span {
 		position: absolute;
-		left: 12px; 
+		left: 18px; 
 		font-family: 'Montserrat', sans-serif;
 		font-size: 0.8rem;
 		font-weight: 500;
