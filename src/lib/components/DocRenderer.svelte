@@ -73,7 +73,13 @@
 
 {#each blocks as block, i (i)}
 	{#if block.type === 'html'}
-		{@html block.html}
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-sm-10 col-lg-8 col-xxl-6">
+					{@html block.html}
+				</div>
+			</div>
+		</div>
 	{:else if block.type === 'shortcode'}
 		{#if getComponent(block.name)}
 			<svelte:component this={getComponent(block.name)} {...normalizeAttrs(block.attrs)} />

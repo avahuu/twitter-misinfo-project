@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap');
 @import '/fonts/fonts.css';
 
 /*************
 Bootstrap configuration overrides must be BEFORE importing Bootstrap. 
 List of options here: https://getbootstrap.com/docs/5.3/customize/options/
 ***************/
+
+$body-bg: #03050c;
+$body-color: #f1f5f9;
 
 $font-family-sans-serif:
 	'Lato',
@@ -15,15 +19,15 @@ $font-size-base: 1.1rem;
 $font-weight-base: 400;
 $line-height-base: 1.6;
 
-$headings-font-family: 'Roboto Slab', 'Lato', serif;
+$headings-font-family: 'Montserrat', 'Roboto Slab', 'Lato', sans-serif;
 $headings-font-style: null;
-$headings-font-weight: 500;
+$headings-font-weight: 700;
 $headings-line-height: 1.2;
-$headings-color: #404040;
+$headings-color: #ffffff;
 
-$display-font-family: 'Crimson Text', 'Roboto Slab', Garamond, 'Times New Roman', serif;
+$display-font-family: 'Montserrat', 'Crimson Text', 'Roboto Slab', Garamond, sans-serif;
 $display-font-style: null;
-$display-font-weight: 300;
+$display-font-weight: 800;
 $display-line-height: $headings-line-height;
 
 $small-font-size: 0.875em;
