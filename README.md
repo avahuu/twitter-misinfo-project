@@ -1,3 +1,14 @@
+# Twitter Misinformation Visualization
+
+## Project Design & Data
+
+- **Data Repository**: [https://github.com/avahuu/misinfo](https://github.com/avahuu/misinfo)
+- **Typography**: [Montserrat](https://fonts.google.com/specimen/Montserrat)
+- **Color Palette**:
+  - Background: `#03050c`
+  - Data Blue Scale: `#eff6ff` → `#006FCA` → `#1e3a8a`
+  - Annotations: `#ffffff`
+
 # Multimedia 2026 Class Project Template (WIP)
 
 This is a starter template for students to use for their final projects. It's built in Svelte and pulls in the main content from a Google Doc as HTML allowing the use for shortcodes to embed multimedia.
