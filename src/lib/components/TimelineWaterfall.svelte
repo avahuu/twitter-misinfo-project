@@ -28,15 +28,7 @@
 	let scrollVelocity = 0;
 	let progress = 0; // 0 to 1 based on scrolled area
 
-	const markers = [
-		{ id: "M1", label: "2023-01", threshold: 0.05 },
-		{ id: "M2", label: "2023-04", threshold: 0.15 },
-		{ id: "M3", label: "2023-07", threshold: 0.25 },
-		{ id: "M4", label: "2023-10", threshold: 0.35 },
-		{ id: "M5", label: "2024-01", threshold: 0.45 },
-		{ id: "M6", label: "2024-11", threshold: 0.55 },
-		{ id: "M7", label: "2025-01", threshold: 0.65 },
-	];
+
 
 	// Intense vibrant blues for the "X"
 	const COLORS = ['#7dd3fc', '#38bdf8', '#0ea5e9', '#0284c7', '#0369a1', '#075985'];
@@ -97,16 +89,17 @@
 			// The logo is only blue shades
 			const colorOpts = COLORS;
 			
+			let baseSize = Math.random() * 2 + 1.5;
 			particles.push({
 				x: Math.random() * width,
 				y: (Math.random() * height * 1.5) - height, 
 				targetX: pt.x,
 				targetY: pt.y,
-				size: Math.random() * 1.5 + 1.2, // Keep falling bits small
-				finalW: Math.random() * 2.5 + 1.5, // Fragment width when snapped into X
-				finalH: Math.random() * 3.5 + 2, // Fragment height when snapped into X
+				size: baseSize,
+				finalW: baseSize * 1.5,
+				finalH: baseSize * 1.5,
 				baseColor: colorOpts[Math.floor(Math.random() * colorOpts.length)],
-				speed: Math.random() * 1.5 + 0.5,
+				speed: Math.random() * 1.0 + 0.3, // Slower so it doesn't look like fast rain
 				opacity: Math.random() * 0.5 + 0.3
 			});
 		}
@@ -151,10 +144,10 @@
 		ctx.fillStyle = 'rgba(3, 5, 12, 0.4)'; 
 		ctx.fillRect(0, 0, width, height);
 		
-		// The Logo collapse happens aggressively towards the end of the scroll (75% onwards)
+		// The Logo collapse happens smoothly across the second half of the scroll
 		let collapsePhase = 0;
-		if (progress > 0.75) {
-			collapsePhase = Math.min(1, (progress - 0.75) / 0.25);
+		if (progress > 0.5) {
+			collapsePhase = Math.min(1, (progress - 0.5) / 0.5);
 		}
 		
 		const ease = collapsePhase < 0.5 ? 2 * collapsePhase * collapsePhase : -1 + (4 - 2 * collapsePhase) * collapsePhase;
@@ -181,8 +174,8 @@
 			
 			ctx.beginPath();
 			
-			const dropWidth = p.size * 1.5;
-			const dropHeight = p.size * 5;
+			const dropWidth = p.size * 1.8;
+			const dropHeight = p.size * 1.8;
 			
 			const currentWidth = dropWidth + (p.finalW - dropWidth) * ease;
 			const currentHeight = dropHeight + (p.finalH - dropHeight) * ease;
@@ -246,24 +239,13 @@
 			</p>
 		</div>
 
-		<!-- Time markers disappear when the Logo fully settles -->
-		<div class="markers-container flex-col-center" style="opacity: {progress > 0.85 ? 0 : 1};">
-			{#each markers as marker, i (marker.id)}
-				<div 
-					class="time-marker"
-					class:active={progress >= marker.threshold && progress < (markers[i+1] ? markers[i+1].threshold : 0.85)}
-					class:past={progress > marker.threshold && !(progress >= marker.threshold && progress < (markers[i+1] ? markers[i+1].threshold : 0.85))}
-				>
-					{marker.label}
-				</div>
-			{/each}
-		</div>
+
 	</div>
 </div>
 
 <style>
 	.timeline-container {
-		height: 450vh;
+		height: 250vh;
 		position: relative;
 		background-color: #03050c; 
 	}
@@ -300,11 +282,7 @@
 		justify-content: center;
 	}
 
-	.flex-col-center {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
+
 
 	.title-container {
 		position: absolute;
@@ -320,8 +298,6 @@
 		font-size: clamp(2rem, 5vw, 4rem);
 		font-weight: 800;
 		max-width: 900px;
-		/* Intense shadow ensures the text pops even when the shiny blue 'X' forms behind it */
-		text-shadow: 0 4px 30px rgba(0,0,0,1), 0 2px 10px rgba(0,0,0,0.8);
 		line-height: 1.25;
 		color: #ffffff; 
 		z-index: 10;
@@ -338,39 +314,5 @@
 		transition: opacity 0.1s linear;
 	}
 
-	.markers-container {
-		position: absolute;
-		top: 0;
-		right: 5%;
-		height: 100%;
-		z-index: 20;
-		pointer-events: none;
-		align-items: flex-end;
-		gap: 2rem;
-		transition: opacity 0.3s;
-	}
 
-	.time-marker {
-		color: rgba(255, 255, 255, 0.15);
-		font-size: 1.2rem;
-		font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-		font-weight: bold;
-		transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-		transform: translateX(40px); 
-		opacity: 0;
-	}
-	
-	.time-marker.past {
-		color: rgba(255, 255, 255, 0.3);
-		transform: translateX(0px);
-		opacity: 1;
-		font-size: 1.2rem;
-	}
-
-	.time-marker.active {
-		color: #ffffff;
-		transform: translateX(-15px) scale(1.3);
-		opacity: 1;
-		text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-	}
 </style>
