@@ -124,6 +124,17 @@
 		</div>
 		
 		<div class="main-layout">
+		<!-- Color legend — left side -->
+		<div class="legend-container">
+			<div class="legend-title">Posts</div>
+			<div class="legend-bar">
+				{#each reversedLegend as bin, idx (idx)}
+					<div class="legend-swatch" style="background-color: {bin.label === 0 ? '#ffffff' : bin.color};">
+						<span class="legend-label">{bin.label}</span>
+					</div>
+				{/each}
+			</div>
+		</div>
 		<div class="heatmap-stack">
 			{#each accounts as acct, accountIndex}
 				<div class="heatmap-wrapper">
@@ -168,7 +179,7 @@
 							
 							<!-- Right Pointer Annotation -->
 							{#if dayIdx === 5}
-								<div class="annot-arc-right-curve" style="grid-row: 8 / span 2; grid-column: -2 / -1; opacity: {progress >= 0.7 ? 1 : 0};">
+								<div class="annot-weekends" style="grid-row: 8 / span 2; grid-column: -2 / -1; opacity: {progress >= 0.7 ? 1 : 0};">
 									<span>Less posts<br/>during<br/>weekends</span>
 								</div>
 							{:else if dayIdx !== 6}
@@ -178,21 +189,6 @@
 					</div>
 				</div>
 			{/each}
-
-
-		</div>
-
-		<!-- Discreate Color Legend on the right -->
-		<div class="legend-container">
-			<div class="legend-title">Posts</div>
-			<div class="legend-bar">
-				{#each reversedLegend as bin, idx (idx)}
-					<!-- Display pure white explicitly when mapped to the lowest base bucket representing zeros to match the graph precisely -->
-					<div class="legend-swatch" style="background-color: {bin.label === 0 ? '#ffffff' : bin.color};">
-						<span class="legend-label">{bin.label}</span>
-					</div>
-				{/each}
-			</div>
 		</div>
 	</div>
 	</div>
@@ -265,8 +261,8 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: flex-start;
-		width: 80px;
+		align-items: flex-end; /* bar sits flush against the chart on its right edge */
+		width: 60px;
 		flex-shrink: 0;
 	}
 
@@ -294,11 +290,13 @@
 
 	.legend-label {
 		position: absolute;
-		left: 28px; /* right side of the swatch */
+		/* Labels sit to the LEFT of the swatch, hanging outward */
+		right: 24px;
 		top: -7px;
 		font-family: 'Montserrat', sans-serif;
 		font-size: 0.75rem;
 		color: rgba(255, 255, 255, 0.8);
+		text-align: right;
 	}
 
 	.heatmap-wrapper {
@@ -324,6 +322,7 @@
 
 	.grid-container {
 		display: grid;
+		/* No trailing right column — legend moved to left, weekend annotation flows naturally */
 		grid-template-columns: 35px repeat(var(--total-cols), minmax(0, 1fr)) 120px;
 		grid-template-rows: 35px 25px repeat(7, minmax(0, 1fr)); 
 		gap: 2px;
@@ -382,71 +381,87 @@
 		border-radius: 4px;
 	}
 
-	/* Flat bracket annotation — horizontal bar with a vertical tick on the right end
-	   Mimics the "campaign stage" bracket style in the reference image */
+	/* Double-tick horizontal span — |————————| with label centered above
+	   Encodes a time range clearly without implying directionality */
 	.annot-arc-top {
 		position: relative;
 		height: 10px;
 		margin-top: 18px;
 		margin-bottom: 2px;
-		display: flex;
-		align-items: flex-end;
 		transition: opacity 0.4s ease-in-out;
 		will-change: opacity;
-		/* Horizontal bar across the full width */
-		border-top: 1px solid rgba(255, 255, 255, 0.85);
-		/* Vertical tick dropping down on the RIGHT side only */
-		border-right: 1px solid rgba(255, 255, 255, 0.85);
-		border-bottom: none;
+		/* Horizontal bar */
+		border-top: 1px solid rgba(255, 255, 255, 0.75);
 		border-left: none;
-		border-radius: 0;
-	}
-
-	.annot-arc-top span {
-		position: absolute;
-		/* Label sits above the left edge of the bracket */
-		top: -22px;
-		left: 0;
-		font-family: 'Montserrat', sans-serif;
-		font-size: 0.8rem;
-		font-weight: 500;
-		letter-spacing: 0.5px;
-		color: rgba(255, 255, 255, 0.95);
-		white-space: nowrap;
-	}
-
-	/* Flat bracket annotation — horizontal bar on top with a vertical tick on the LEFT side
-	   Mirrors the top bracket style but oriented for a right-side annotation */
-	.annot-arc-right-curve {
-		position: relative;
-		width: 14px;
-		margin-left: 6px;
-		margin-top: 2px;
-		margin-bottom: 2px;
-		display: flex;
-		align-items: flex-start;
-		transition: opacity 0.4s ease-in-out;
-		will-change: opacity;
-		/* Horizontal bar across the top */
-		border-top: 1px solid rgba(255, 255, 255, 0.85);
-		/* Vertical tick dropping down on the LEFT side only */
-		border-left: 1px solid rgba(255, 255, 255, 0.85);
 		border-right: none;
 		border-bottom: none;
 		border-radius: 0;
 	}
 
-	.annot-arc-right-curve span {
+	/* Left tick */
+	.annot-arc-top::before {
+		content: '';
 		position: absolute;
-		/* Label sits to the right of the bracket, vertically centered at the top */
+		top: -1px;
+		left: 0;
+		width: 1px;
+		height: 8px;
+		background: rgba(255, 255, 255, 0.75);
+	}
+
+	/* Right tick */
+	.annot-arc-top::after {
+		content: '';
+		position: absolute;
+		top: -1px;
+		right: 0;
+		width: 1px;
+		height: 8px;
+		background: rgba(255, 255, 255, 0.75);
+	}
+
+	.annot-arc-top span {
+		position: absolute;
 		top: -22px;
-		left: 18px;
+		/* Center label over the full span */
+		left: 0;
+		right: 0;
+		text-align: center;
 		font-family: 'Montserrat', sans-serif;
 		font-size: 0.8rem;
 		font-weight: 500;
 		letter-spacing: 0.5px;
 		color: rgba(255, 255, 255, 0.95);
 		white-space: nowrap;
-		line-height: 1.4;
+	}
+
+	/* Vertical blockquote bar — spans the Sat + Sun rows on the right
+	   A vertical accent encodes a row grouping (day axis), not a time range */
+	.annot-weekends {
+		position: relative;
+		margin-left: 8px;
+		margin-top: 2px;
+		margin-bottom: 2px;
+		display: flex;
+		align-items: center; /* vertically center the label */
+		transition: opacity 0.4s ease-in-out;
+		will-change: opacity;
+		/* Vertical accent bar on the left edge */
+		border-left: 2px solid rgba(255, 255, 255, 0.6);
+		border-top: none;
+		border-right: none;
+		border-bottom: none;
+	}
+
+	.annot-weekends span {
+		position: absolute;
+		left: 12px;
+		font-family: 'Montserrat', sans-serif;
+		font-size: 0.78rem;
+		font-weight: 500;
+		letter-spacing: 0.4px;
+		color: rgba(255, 255, 255, 0.85);
+		white-space: nowrap;
+		line-height: 1.5;
 	}
 </style>
