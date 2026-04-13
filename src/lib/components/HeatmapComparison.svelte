@@ -75,30 +75,41 @@
 		}
 	});
 
-	// To create distinct "layering", we bucket values into 9 discrete shades of blue
-	const blues = d3.schemeBlues[9];
+	// Custom 9-step blue palette: dark navy → deep blue → vivid blue → bright blue → pale sky → near white
+	// Matches the reference screenshot's color ramp
+	const blues: string[] = [
+		'#e8f4ff', // 1 – near white (lowest)
+		'#b8dcff', // 2 – pale sky
+		'#6db8ff', // 3 – light blue
+		'#3a91f0', // 4 – medium blue
+		'#1a6be8', // 5 – vivid blue
+		'#0f4bbf', // 6 – strong blue
+		'#0a2a6e', // 7 – deep blue
+		'#061540', // 8 – navy
+		'#03060f', // 9 – near black (highest)
+	];
 	const blueScale = d3.scaleQuantize<string>()
 		.domain([0, globalMax])
 		.range(blues);
 
-	// Pre-calculate legend steps (reversed so darkest blue is at the top)
+	// Pre-calculate legend steps (reversed so darkest is at the top)
 	const reversedLegend = [...blues].reverse().map((color, idx) => {
 		const actBucket = 8 - idx;
-		// Each bucket spans exactly globalMax / 9. 
 		const threshold = Math.round(actBucket * (globalMax / 9));
 		return { color, label: threshold };
 	});
 
 	// Heatmap mapping: Discrete shades of blue
 	function getColor(val: number) {
-		if (!val || val === 0) return '#ffffff'; // 0 posts is pure white
+		if (!val || val === 0) return '#ffffff'; // 0 posts → white
 		return blueScale(val);
 	}
 	
 	function getTextColor(val: number) {
 		const ratio = Math.min(val / globalMax, 1);
-		// White text on dark blue cells, dark gray text on light blue/white cells
-		return ratio > 0.45 ? '#ffffff' : '#1e293b'; 
+		// White text on dark cells, dark text on light cells
+		// Threshold raised slightly because our palette is darker overall
+		return ratio > 0.35 ? '#ffffff' : '#0a1628';
 	}
 
 </script>
@@ -371,23 +382,31 @@
 		border-radius: 4px;
 	}
 
+	/* Flat bracket annotation — horizontal bar with a vertical tick on the right end
+	   Mimics the "campaign stage" bracket style in the reference image */
 	.annot-arc-top {
-		border: 1px solid rgba(255, 255, 255, 0.85);
-		border-bottom: none;
-		border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-		height: 10px;
-		margin-top: 18px; 
-		margin-bottom: 2px;
 		position: relative;
+		height: 10px;
+		margin-top: 18px;
+		margin-bottom: 2px;
 		display: flex;
-		justify-content: center;
+		align-items: flex-end;
 		transition: opacity 0.4s ease-in-out;
 		will-change: opacity;
+		/* Horizontal bar across the full width */
+		border-top: 1px solid rgba(255, 255, 255, 0.85);
+		/* Vertical tick dropping down on the RIGHT side only */
+		border-right: 1px solid rgba(255, 255, 255, 0.85);
+		border-bottom: none;
+		border-left: none;
+		border-radius: 0;
 	}
 
 	.annot-arc-top span {
 		position: absolute;
-		top: -24px;
+		/* Label sits above the left edge of the bracket */
+		top: -22px;
+		left: 0;
 		font-family: 'Montserrat', sans-serif;
 		font-size: 0.8rem;
 		font-weight: 500;
@@ -396,29 +415,38 @@
 		white-space: nowrap;
 	}
 
+	/* Flat bracket annotation — horizontal bar on top with a vertical tick on the LEFT side
+	   Mirrors the top bracket style but oriented for a right-side annotation */
 	.annot-arc-right-curve {
-		border: 1px solid rgba(255, 255, 255, 0.85);
-		border-left: none;
-		border-radius: 0 100% 100% 0 / 0 50% 50% 0;
-		width: 10px;
+		position: relative;
+		width: 14px;
 		margin-left: 6px;
 		margin-top: 2px;
 		margin-bottom: 2px;
-		position: relative;
 		display: flex;
-		align-items: center;
+		align-items: flex-start;
 		transition: opacity 0.4s ease-in-out;
 		will-change: opacity;
+		/* Horizontal bar across the top */
+		border-top: 1px solid rgba(255, 255, 255, 0.85);
+		/* Vertical tick dropping down on the LEFT side only */
+		border-left: 1px solid rgba(255, 255, 255, 0.85);
+		border-right: none;
+		border-bottom: none;
+		border-radius: 0;
 	}
 
 	.annot-arc-right-curve span {
 		position: absolute;
-		left: 18px; 
+		/* Label sits to the right of the bracket, vertically centered at the top */
+		top: -22px;
+		left: 18px;
 		font-family: 'Montserrat', sans-serif;
 		font-size: 0.8rem;
 		font-weight: 500;
 		letter-spacing: 0.5px;
 		color: rgba(255, 255, 255, 0.95);
+		white-space: nowrap;
 		line-height: 1.4;
 	}
 </style>

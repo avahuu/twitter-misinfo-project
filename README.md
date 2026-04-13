@@ -1,13 +1,8 @@
-# Twitter Misinformation Visualization
+# Multimedia 2026 Class Project Template (WIP)
 
-## Project Design & Data
+This is a starter template for students to use for their final projects. It's built in Svelte and pulls in the main content from a Google Doc as HTML allowing the use for shortcodes to embed multimedia.
 
-- **Data Repository**: [https://github.com/avahuu/misinfo](https://github.com/avahuu/misinfo)
-- **Typography**: [Montserrat](https://fonts.google.com/specimen/Montserrat)
-- **Color Palette**:
-  - Background: `#03050c`
-  - Data Blue Scale: `#eff6ff` → `#006FCA` → `#1e3a8a`
-  - Annotations: `#ffffff`
+Any images embedded in the Google Doc will automatically be brought in as base64-encoded data URLs. This makes it easy so that no external image hosting or asset management is required, however with lots of images it can slow your webpage and it's recommend to use the image shortcode to host your images externally on CDNs.
 
 # Multimedia 2026 Class Project Template (WIP)
 
