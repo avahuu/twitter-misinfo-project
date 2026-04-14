@@ -112,6 +112,12 @@
 		return ratio > 0.35 ? '#ffffff' : '#0a1628';
 	}
 
+	// Format "2024-03" → "24 03" (compact, no redundant century)
+	function formatMonth(m: string) {
+		const [year, mon] = m.split('-');
+		return `${year.slice(2)} ${mon}`;
+	}
+
 </script>
 
 <div class="scrolly-container" bind:this={container}>
@@ -156,7 +162,7 @@
 						<div class="corner"></div>
 						{#each months as month}
 							<div class="month-header">
-								<span class="rotate-text">{month}</span>
+								<span class="rotate-text">{formatMonth(month)}</span>
 							</div>
 						{/each}
 						<div class="corner"></div>
@@ -337,24 +343,23 @@
 
 	.month-header {
 		display: flex;
-		align-items: flex-end;
+		align-items: center;
 		justify-content: center;
-		overflow: visible; /* Allows rotated text to push upward */
+		overflow: visible;
 	}
 
 	.rotate-text {
-		transform: rotate(-45deg);
-		transform-origin: left bottom;
-		font-size: clamp(0.5rem, 1.2vh, 0.75rem);
-		color: rgba(255, 255, 255, 0.5);
+		transform: none;
+		font-size: clamp(0.65rem, 1.5vh, 0.9rem);
+		color: rgba(255, 255, 255, 0.65);
 		white-space: nowrap;
 		display: inline-block;
-		margin-left: 5px;
+		text-align: center;
 	}
 
 	.day-label {
-		font-size: clamp(0.5rem, 1.2vh, 0.75rem);
-		color: rgba(255, 255, 255, 0.5);
+		font-size: clamp(0.65rem, 1.5vh, 0.9rem);
+		color: rgba(255, 255, 255, 0.65);
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
