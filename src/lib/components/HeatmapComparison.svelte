@@ -75,30 +75,47 @@
 		}
 	});
 
-	// To create distinct "layering", we bucket values into 9 discrete shades of blue
-	const blues = d3.schemeBlues[9];
+	// Custom 9-step blue palette: dark navy → deep blue → vivid blue → bright blue → pale sky → near white
+	// Matches the reference screenshot's color ramp
+	const blues: string[] = [
+		'#e8f4ff', // 1 – near white (lowest)
+		'#b8dcff', // 2 – pale sky
+		'#6db8ff', // 3 – light blue
+		'#3a91f0', // 4 – medium blue
+		'#1a6be8', // 5 – vivid blue
+		'#0f4bbf', // 6 – strong blue
+		'#0a2a6e', // 7 – deep blue
+		'#061540', // 8 – navy
+		'#03060f', // 9 – near black (highest)
+	];
 	const blueScale = d3.scaleQuantize<string>()
 		.domain([0, globalMax])
 		.range(blues);
 
-	// Pre-calculate legend steps (reversed so darkest blue is at the top)
+	// Pre-calculate legend steps (reversed so darkest is at the top)
 	const reversedLegend = [...blues].reverse().map((color, idx) => {
 		const actBucket = 8 - idx;
-		// Each bucket spans exactly globalMax / 9. 
 		const threshold = Math.round(actBucket * (globalMax / 9));
 		return { color, label: threshold };
 	});
 
 	// Heatmap mapping: Discrete shades of blue
 	function getColor(val: number) {
-		if (!val || val === 0) return '#ffffff'; // 0 posts is pure white
+		if (!val || val === 0) return '#ffffff'; // 0 posts → white
 		return blueScale(val);
 	}
 	
 	function getTextColor(val: number) {
 		const ratio = Math.min(val / globalMax, 1);
-		// White text on dark blue cells, dark gray text on light blue/white cells
-		return ratio > 0.45 ? '#ffffff' : '#1e293b'; 
+		// White text on dark cells, dark text on light cells
+		// Threshold raised slightly because our palette is darker overall
+		return ratio > 0.35 ? '#ffffff' : '#0a1628';
+	}
+
+	// Format "2024-03" → "24 03" (compact, no redundant century)
+	function formatMonth(m: string) {
+		const [year, mon] = m.split('-');
+		return `${year.slice(2)} ${mon}`;
 	}
 
 </script>
@@ -113,6 +130,17 @@
 		</div>
 		
 		<div class="main-layout">
+		<!-- Color legend — left side -->
+		<div class="legend-container">
+			<div class="legend-title">Posts</div>
+			<div class="legend-bar">
+				{#each reversedLegend as bin, idx (idx)}
+					<div class="legend-swatch" style="background-color: {bin.label === 0 ? '#ffffff' : bin.color};">
+						<span class="legend-label">{bin.label}</span>
+					</div>
+				{/each}
+			</div>
+		</div>
 		<div class="heatmap-stack">
 			{#each accounts as acct, accountIndex}
 				<div class="heatmap-wrapper">
@@ -134,7 +162,7 @@
 						<div class="corner"></div>
 						{#each months as month}
 							<div class="month-header">
-								<span class="rotate-text">{month}</span>
+								<span class="rotate-text">{formatMonth(month)}</span>
 							</div>
 						{/each}
 						<div class="corner"></div>
@@ -157,7 +185,7 @@
 							
 							<!-- Right Pointer Annotation -->
 							{#if dayIdx === 5}
-								<div class="annot-arc-right-curve" style="grid-row: 8 / span 2; grid-column: -2 / -1; opacity: {progress >= 0.7 ? 1 : 0};">
+								<div class="annot-weekends" style="grid-row: 8 / span 2; grid-column: -2 / -1; opacity: {progress >= 0.7 ? 1 : 0};">
 									<span>Less posts<br/>during<br/>weekends</span>
 								</div>
 							{:else if dayIdx !== 6}
@@ -167,21 +195,6 @@
 					</div>
 				</div>
 			{/each}
-
-
-		</div>
-
-		<!-- Discreate Color Legend on the right -->
-		<div class="legend-container">
-			<div class="legend-title">Posts</div>
-			<div class="legend-bar">
-				{#each reversedLegend as bin, idx (idx)}
-					<!-- Display pure white explicitly when mapped to the lowest base bucket representing zeros to match the graph precisely -->
-					<div class="legend-swatch" style="background-color: {bin.label === 0 ? '#ffffff' : bin.color};">
-						<span class="legend-label">{bin.label}</span>
-					</div>
-				{/each}
-			</div>
 		</div>
 	</div>
 	</div>
@@ -254,8 +267,8 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		align-items: flex-start;
-		width: 80px;
+		align-items: flex-end; /* bar sits flush against the chart on its right edge */
+		width: 60px;
 		flex-shrink: 0;
 	}
 
@@ -283,11 +296,13 @@
 
 	.legend-label {
 		position: absolute;
-		left: 28px; /* right side of the swatch */
+		/* Labels sit to the LEFT of the swatch, hanging outward */
+		right: 24px;
 		top: -7px;
 		font-family: 'Montserrat', sans-serif;
 		font-size: 0.75rem;
 		color: rgba(255, 255, 255, 0.8);
+		text-align: right;
 	}
 
 	.heatmap-wrapper {
@@ -313,6 +328,7 @@
 
 	.grid-container {
 		display: grid;
+		/* No trailing right column — legend moved to left, weekend annotation flows naturally */
 		grid-template-columns: 35px repeat(var(--total-cols), minmax(0, 1fr)) 120px;
 		grid-template-rows: 35px 25px repeat(7, minmax(0, 1fr)); 
 		gap: 2px;
@@ -327,24 +343,23 @@
 
 	.month-header {
 		display: flex;
-		align-items: flex-end;
+		align-items: center;
 		justify-content: center;
-		overflow: visible; /* Allows rotated text to push upward */
+		overflow: visible;
 	}
 
 	.rotate-text {
-		transform: rotate(-45deg);
-		transform-origin: left bottom;
-		font-size: clamp(0.5rem, 1.2vh, 0.75rem);
-		color: rgba(255, 255, 255, 0.5);
+		transform: none;
+		font-size: clamp(0.65rem, 1.5vh, 0.9rem);
+		color: rgba(255, 255, 255, 0.65);
 		white-space: nowrap;
 		display: inline-block;
-		margin-left: 5px;
+		text-align: center;
 	}
 
 	.day-label {
-		font-size: clamp(0.5rem, 1.2vh, 0.75rem);
-		color: rgba(255, 255, 255, 0.5);
+		font-size: clamp(0.65rem, 1.5vh, 0.9rem);
+		color: rgba(255, 255, 255, 0.65);
 		display: flex;
 		align-items: center;
 		justify-content: flex-end;
@@ -371,23 +386,52 @@
 		border-radius: 4px;
 	}
 
+	/* Double-tick horizontal span — |————————| with label centered above
+	   Encodes a time range clearly without implying directionality */
 	.annot-arc-top {
-		border: 1px solid rgba(255, 255, 255, 0.85);
-		border-bottom: none;
-		border-radius: 50% 50% 0 0 / 100% 100% 0 0;
-		height: 10px;
-		margin-top: 18px; 
-		margin-bottom: 2px;
 		position: relative;
-		display: flex;
-		justify-content: center;
+		height: 10px;
+		margin-top: 18px;
+		margin-bottom: 2px;
 		transition: opacity 0.4s ease-in-out;
 		will-change: opacity;
+		/* Horizontal bar */
+		border-top: 1px solid rgba(255, 255, 255, 0.75);
+		border-left: none;
+		border-right: none;
+		border-bottom: none;
+		border-radius: 0;
+	}
+
+	/* Left tick */
+	.annot-arc-top::before {
+		content: '';
+		position: absolute;
+		top: -1px;
+		left: 0;
+		width: 1px;
+		height: 8px;
+		background: rgba(255, 255, 255, 0.75);
+	}
+
+	/* Right tick */
+	.annot-arc-top::after {
+		content: '';
+		position: absolute;
+		top: -1px;
+		right: 0;
+		width: 1px;
+		height: 8px;
+		background: rgba(255, 255, 255, 0.75);
 	}
 
 	.annot-arc-top span {
 		position: absolute;
-		top: -24px;
+		top: -22px;
+		/* Center label over the full span */
+		left: 0;
+		right: 0;
+		text-align: center;
 		font-family: 'Montserrat', sans-serif;
 		font-size: 0.8rem;
 		font-weight: 500;
@@ -396,29 +440,33 @@
 		white-space: nowrap;
 	}
 
-	.annot-arc-right-curve {
-		border: 1px solid rgba(255, 255, 255, 0.85);
-		border-left: none;
-		border-radius: 0 100% 100% 0 / 0 50% 50% 0;
-		width: 10px;
-		margin-left: 6px;
+	/* Vertical blockquote bar — spans the Sat + Sun rows on the right
+	   A vertical accent encodes a row grouping (day axis), not a time range */
+	.annot-weekends {
+		position: relative;
+		margin-left: 8px;
 		margin-top: 2px;
 		margin-bottom: 2px;
-		position: relative;
 		display: flex;
-		align-items: center;
+		align-items: center; /* vertically center the label */
 		transition: opacity 0.4s ease-in-out;
 		will-change: opacity;
+		/* Vertical accent bar on the left edge */
+		border-left: 2px solid rgba(255, 255, 255, 0.6);
+		border-top: none;
+		border-right: none;
+		border-bottom: none;
 	}
 
-	.annot-arc-right-curve span {
+	.annot-weekends span {
 		position: absolute;
-		left: 18px; 
+		left: 12px;
 		font-family: 'Montserrat', sans-serif;
-		font-size: 0.8rem;
+		font-size: 0.78rem;
 		font-weight: 500;
-		letter-spacing: 0.5px;
-		color: rgba(255, 255, 255, 0.95);
-		line-height: 1.4;
+		letter-spacing: 0.4px;
+		color: rgba(255, 255, 255, 0.85);
+		white-space: nowrap;
+		line-height: 1.5;
 	}
 </style>
