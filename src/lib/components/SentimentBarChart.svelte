@@ -33,6 +33,14 @@
     if (!svgEl) return;
     while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
 
+    // Filter defs for shimmering effect
+    const defs = el('defs', {});
+    const filter = el('filter', { id: 'hd', x: '-8%', y: '-8%', width: '116%', height: '116%' });
+    filter.appendChild(el('feTurbulence', { type: 'fractalNoise', baseFrequency: '0.04', numOctaves: '3', result: 'n' }));
+    filter.appendChild(el('feDisplacementMap', { in: 'SourceGraphic', in2: 'n', scale: '4', xChannelSelector: 'R', yChannelSelector: 'G' }));
+    defs.appendChild(filter);
+    svgEl.appendChild(defs);
+
     const W = svgEl.clientWidth || 600;
     const H = Math.max(400, data.length * 35);
     svgEl.style.height = `${H}px`;
@@ -72,7 +80,12 @@
       // bar
       const rect = el('rect', {
         x: ml, y, width: Math.max(0, w), height: barHeight,
-        fill: PRIMARY_COLOR, rx: 3,
+        fill: 'rgba(0, 108, 254, 0.15)',
+        stroke: PRIMARY_COLOR,
+        'stroke-width': '1.5',
+        'stroke-dasharray': '5 3',
+        filter: 'url(#hd)',
+        rx: 3,
         style: 'cursor: pointer; transition: opacity 0.2s;'
       });
       
