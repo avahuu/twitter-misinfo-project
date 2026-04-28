@@ -35,6 +35,52 @@ export const profiles = [
 ];
 
 export const tweets = [
+  // ── Apr 25 ───────────────────────────────────────────────────────────────
+  {
+    id: 8,
+    profileId: "sydney",
+    time: "Apr 25",
+    content_zh: "突发！川普正在参加白宫记者协会晚宴的时候，现场突然传来枪响",
+    content_en: "Breaking News! Gunshots suddenly rang out at the White House Correspondents' Association Dinner while Trump was attending",
+    views: "59.7K",
+    replies: "27",
+    reposts: "123",
+    likes: "152"
+  },
+  {
+    id: 6,
+    profileId: "xixing",
+    time: "Apr 25",
+    content_zh: "⚠️⚠️⚠️突发：川普总统今晚举行白宫记者晚会发生前，一名加州枪手试图执行暗杀被抓。...在随后的记者会上，川普揭示白宫这座建筑并不安全，这就是为何他要重修，\'我们需要此前没有见过的安全标准..我们需要白宫舞厅，军队需要它！\'。 ",
+    content_en: `⚠️⚠️⚠️ BREAKING: A California gunman was caught tonight attempting to assassinate President Trump before the WHCD...At a later presser, Trump revealed the building is unsafe—hence his renovation plans: "We need security standards like never before... We need a White House Ballroom; the Military needs it!`,
+    views: "2.9K",
+    replies: "3",
+    reposts: "16",
+    likes: "44"
+  },
+  {
+    id: 5,
+    profileId: "sydney",
+    time: "Apr 25",
+    content_zh: "特勤局否决了川普返回继续发表演说，今晚演讲取消，未来30天重新排期，老头估计郁闷了，特么刚刚咋就忘了fight fight fight了呢",
+    content_en: `The Secret Service vetoed Trump's return to finish the speech. Tonight is canceled; rescheduled for within 30 days. The old man's gotta be frustrated—how the hell did he forget to "fight, fight, fight" just now?`,
+    views: "4.3K",
+    replies: "6",
+    reposts: "2",
+    likes: "29"
+  },
+  {
+    id: 3,
+    profileId: "sydney",
+    time: "Apr 25",
+    content_zh: `为什么川普遇刺，一群土鳖把枪口对准姜伟嘉？\n\n说她指手画脚的，说她给枪手打暗号的，说她绊倒撤离的川普的\n\n福建人养的怎么了？CBS记者怎么了？质问过川普又怎么了？老公的创投公司红杉投过钱又怎么了？`,
+    content_en: `Why is it that after Trump's assassination attempt, a bunch of "local bumpkins" turned their sights on Weijia Jiang?\n\nThey're claiming she was bossing people around, that she was signaling the shooter, or even that she tried to trip Trump while he was being evacuated.\n\nSo what if she was raised by Fujianese immigrants?`,
+    views: "24K",
+    replies: "142",
+    reposts: "9",
+    likes: "215"
+  },
+  // ── Apr 26 ───────────────────────────────────────────────────────────────
   {
     id: 1,
     profileId: "cao",
@@ -58,69 +104,26 @@ export const tweets = [
     likes: "214"
   },
   {
-    id: 3,
-    profileId: "sydney",
-    time: "Apr 25",
-    content_zh: `为什么川普遇刺，一群土鳖把枪口对准姜伟嘉？\n\n说她指手画脚的，说她给枪手打暗号的，说她绊倒撤离的川普的\n\n福建人养的怎么了？CBS记者怎么了？质问过川普又怎么了？老公的创投公司红杉投过钱又怎么了？`,
-    content_en: `Why is it that after Trump's assassination attempt, a bunch of "local bumpkins" turned their sights on Weijia Jiang?\n\nThey're claiming she was bossing people around, that she was signaling the shooter, or even that she tried to trip Trump while he was being evacuated.\n\nSo what if she was raised by Fujianese immigrants?`,
-    views: "24K",
-    replies: "142",
-    reposts: "9",
-    likes: "215"
-  },
-  {
-    id: 4,
-    profileId: "xixing",
-    time: "Apr 26",
-    content_zh: "4/28/26🔥🔥川普在周末经历“暗杀未遂”后，第二天就接受了60分钟的采访。左媒体CNBC不放过这次埋汰川普的机会，竟然朗读枪手的宣言，称他的目标是“川普政府的强奸犯和恋童癖”。川普立刻对这位采访的主持Norah O’Donnell进行了当面反击。",
-    content_en: "4/28/26: 🔥🔥Just one day after surviving an 'assassination attempt' over the weekend, Trump sat down for an interview with 60 Minutes. The leftist outlet CNBC didn't miss the chance to drag him, actually reading the shooter’s manifesto aloud—claiming his targets were the "rapists and pedophiles of the Trump administration." Trump immediately fired back at the host, Norah O’Donnell, right to her face.",
-    views: "144",
-    replies: "0",
-    reposts: "1",
-    likes: "4"
-  },
-  {
-    id: 5,
-    profileId: "sydney",
-    time: "Apr 25",
-    content_zh: "特勤局否决了川普返回继续发表演说，今晚演讲取消，未来30天重新排期，老头估计郁闷了，特么刚刚咋就忘了fight fight fight了呢",
-    content_en: "The Secret Service vetoed Trump's return to finish the speech. Tonight is canceled; rescheduled for within 30 days. The old man’s gotta be frustrated—how the hell did he forget to "fight, fight, fight" just now?",
-    views: "4.3K",
-    replies: "6",
-    reposts: "2",
-    likes: "29"
-  },
-  {
-    id: 6,
-    profileId: "xixing",
-    time: "Apr 25",
-    content_zh: "⚠️⚠️⚠️突发：川普总统今晚举行白宫记者晚会发生前，一名加州枪手试图执行暗杀被抓。...在随后的记者会上，川普揭示白宫这座建筑并不安全，这就是为何他要重修，'我们需要此前没有见过的安全标准..我们需要白宫舞厅，军队需要它！'。 ",
-    content_en: "⚠️⚠️⚠️ BREAKING: A California gunman was caught tonight attempting to assassinate President Trump before the WHCD...At a later presser, Trump revealed the building is unsafe—hence his renovation plans: "We need security standards like never before... We need a White House Ballroom; the Military needs it!",
-    views: "2.9K"
-    replies: "3",
-    reposts: "16",
-    likes: "44"
-  },
-  {
     id: 7,
     profileId: "cao",
     time: "Apr 26",
     content_zh: "一个女宾乘混乱偷走两瓶酒。连瓶酒都偷，其道德已低到怎么可能在乎真实和客观这些媒体原则。美国的记者都烂到这种地步，哪还是第四权，已变成特权霉体。",
-    content_en: " a female guest who took advantage of the chaos to steal two bottles of wine. Stealing bottles of wine—her morals are so low that how could she possibly care about principles like truth and objectivity in journalism. American journalists have rotted to this extent; they're no longer the fourth estate, they've turned into a privileged moldy media.",
+    content_en: "a female guest who took advantage of the chaos to steal two bottles of wine. Stealing bottles of wine—her morals are so low that how could she possibly care about principles like truth and objectivity in journalism. American journalists have rotted to this extent; they're no longer the fourth estate, they've turned into a privileged moldy media.",
     views: "14K",
     replies: "38",
     reposts: "173",
     likes: "487"
   },
+  // ── Apr 28 ───────────────────────────────────────────────────────────────
   {
-    id: 8,
-    profileId: "sydney",
-    time: "Apr 25",
-    content_zh: "突发！川普正在参加白宫记者协会晚宴的时候，现场突然传来枪响",
-    content_en: "Breaking News! Gunshots suddenly rang out at the White House Correspondents' Association Dinner while Trump was attending",
-    views: "59.7K",
-    replies: "27",
-    reposts: "123",
-    likes: "152"
+    id: 4,
+    profileId: "xixing",
+    time: "Apr 28",
+    content_zh: `4/28/26🔥🔥川普在周末经历"暗杀未遂"后，第二天就接受了60分钟的采访。左媒体CNBC不放过这次埋汰川普的机会，竟然朗读枪手的宣言，称他的目标是"川普政府的强奸犯和恋童癖"。川普立刻对这位采访的主持Norah O'Donnell进行了当面反击。\n\n"我刚才等着你把那段读出来，因为我知道你会读的——因为你们是很糟糕的人。"\n"你读那些话应该感到羞耻，我根本不是那些说的那样。"`,
+    content_en: `4/28/26: 🔥🔥Just one day after surviving an "assassination attempt" over the weekend, Trump sat down for an interview with 60 Minutes. The leftist outlet CNBC didn't miss the chance to drag him, actually reading the shooter's manifesto aloud—claiming his targets were the "rapists and pedophiles of the Trump administration." Trump immediately fired back at the host, Norah O'Donnell, right to her face.\n\n"I was waiting for you to read that, because I knew you would—because you're very bad people."\n"You should be ashamed of yourself for reading that. I'm none of those things."`,
+    views: "144",
+    replies: "0",
+    reposts: "1",
+    likes: "4"
   }
 ];

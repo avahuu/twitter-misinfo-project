@@ -2,87 +2,89 @@
   import { profiles, tweets } from './twitterData.js';
   import { onMount, onDestroy } from 'svelte';
 
-  // SVG Icons
   const VerifiedIcon = `<svg viewBox="0 0 24 24" aria-label="Verified account" role="img" class="icon-verified"><g><path d="M22.5 12.5c0-1.58-.875-2.95-2.148-3.6.154-.435.238-.905.238-1.4 0-2.21-1.71-3.998-3.918-3.998-.47 0-.92.084-1.336.25C14.818 2.415 13.51 1.5 12 1.5s-2.816.917-3.337 2.25c-.416-.165-.866-.25-1.336-.25-2.21 0-3.918 1.792-3.918 4 0 .495.084.965.238 1.4-1.273.65-2.148 2.02-2.148 3.6 0 1.46.74 2.746 1.846 3.45-.06.273-.095.556-.095.847 0 2.21 1.71 4 3.918 4 .47 0 .92-.086 1.336-.25C9.182 21.585 10.49 22.5 12 22.5s2.816-.917 3.337-2.25c.416.165.866.25 1.336.25 2.21 0 3.918-1.792 3.918-4 0-.29-.035-.574-.095-.848 1.107-.704 1.846-1.99 1.846-3.45z" fill="currentColor"></path><path d="M10.246 15.364l-2.613-2.613c-.39-.39-.39-1.023 0-1.414.39-.39 1.024-.39 1.415 0l1.905 1.906 4.685-4.686c.39-.39 1.024-.39 1.415 0 .39.39.39 1.024 0 1.414l-5.392 5.393c-.39.39-1.024.39-1.415 0z" fill="#fff"></path></g></svg>`;
-  const ReplyIcon   = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366c4.49 0 8.129 3.64 8.129 8.13 0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067c-4.49.1-8.183-3.51-8.183-8.01zm8.005-6c-3.317 0-6.005 2.69-6.005 6 0 3.37 2.77 6.08 6.138 6.01l.351-.01h1.761v2.3l5.087-2.81c1.951-1.08 3.163-3.13 3.163-5.36 0-3.39-2.744-6.13-6.129-6.13H9.756z"></path></g></svg>`;
-  const RepostIcon  = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"></path></g></svg>`;
-  const LikeIcon    = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>`;
-  const ViewIcon    = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M8.75 21V3h2v18h-2zM18 21V8.5h2V21h-2zM4 21l.004-10h2L6 21H4zm9.248 0v-7h2v7h-2z"></path></g></svg>`;
-  const BookmarkIcon= `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5zM6.5 4c-.276 0-.5.22-.5.5v14.56l6-4.29 6 4.29V4.5c0-.28-.224-.5-.5-.5h-11z"></path></g></svg>`;
-  const ShareIcon   = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M12 2.59l5.7 5.7-1.41 1.42L13 6.41V16h-2V6.41l-3.3 3.3-1.41-1.42L12 2.59zM21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z"></path></g></svg>`;
-  const MoreIcon    = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path></g></svg>`;
+  const ReplyIcon    = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M1.751 10c0-4.42 3.584-8 8.005-8h4.366c4.49 0 8.129 3.64 8.129 8.13 0 2.96-1.607 5.68-4.196 7.11l-8.054 4.46v-3.69h-.067c-4.49.1-8.183-3.51-8.183-8.01zm8.005-6c-3.317 0-6.005 2.69-6.005 6 0 3.37 2.77 6.08 6.138 6.01l.351-.01h1.761v2.3l5.087-2.81c1.951-1.08 3.163-3.13 3.163-5.36 0-3.39-2.744-6.13-6.129-6.13H9.756z"></path></g></svg>`;
+  const RepostIcon   = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M4.5 3.88l4.432 4.14-1.364 1.46L5.5 7.55V16c0 1.1.896 2 2 2H13v2H7.5c-2.209 0-4-1.79-4-4V7.55L1.432 9.48.068 8.02 4.5 3.88zM16.5 6H11V4h5.5c2.209 0 4 1.79 4 4v8.45l2.068-1.93 1.364 1.46-4.432 4.14-4.432-4.14 1.364-1.46 2.068 1.93V8c0-1.1-.896-2-2-2z"></path></g></svg>`;
+  const LikeIcon     = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M16.697 5.5c-1.222-.06-2.679.51-3.89 2.16l-.805 1.09-.806-1.09C9.984 6.01 8.526 5.44 7.304 5.5c-1.243.07-2.349.78-2.91 1.91-.552 1.12-.633 2.78.479 4.82 1.074 1.97 3.257 4.27 7.129 6.61 3.87-2.34 6.052-4.64 7.126-6.61 1.111-2.04 1.03-3.7.477-4.82-.561-1.13-1.666-1.84-2.908-1.91zm4.187 7.69c-1.351 2.48-4.001 5.12-8.379 7.67l-.503.3-.504-.3c-4.379-2.55-7.029-5.19-8.382-7.67-1.36-2.5-1.41-4.86-.514-6.67.887-1.79 2.647-2.91 4.601-3.01 1.651-.09 3.368.56 4.798 2.01 1.429-1.45 3.146-2.1 4.796-2.01 1.954.1 3.714 1.22 4.601 3.01.896 1.81.846 4.17-.514 6.67z"></path></g></svg>`;
+  const ViewIcon     = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M8.75 21V3h2v18h-2zM18 21V8.5h2V21h-2zM4 21l.004-10h2L6 21H4zm9.248 0v-7h2v7h-2z"></path></g></svg>`;
+  const BookmarkIcon = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M4 4.5C4 3.12 5.119 2 6.5 2h11C18.881 2 20 3.12 20 4.5v18.44l-8-5.71-8 5.71V4.5zM6.5 4c-.276 0-.5.22-.5.5v14.56l6-4.29 6 4.29V4.5c0-.28-.224-.5-.5-.5h-11z"></path></g></svg>`;
+  const ShareIcon    = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M12 2.59l5.7 5.7-1.41 1.42L13 6.41V16h-2V6.41l-3.3 3.3-1.41-1.42L12 2.59zM21 15l-.02 3.51c0 1.38-1.12 2.49-2.5 2.49H5.5C4.11 21 3 19.88 3 18.5V15h2v3.5c0 .28.22.5.5.5h12.98c.28 0 .5-.22.5-.5L19 15h2z"></path></g></svg>`;
+  const MoreIcon     = `<svg viewBox="0 0 24 24" class="icon-metric"><g><path d="M3 12c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm9 2c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm7 0c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path></g></svg>`;
 
   const enrichedTweets = tweets.map(tweet => ({
     ...tweet,
     profile: profiles.find(p => p.id === tweet.profileId)
   }));
 
-  // ── Scroll-driven parallax state ──────────────────────────────────────────
+  // Direct DOM refs — we write transform/opacity here, bypassing Svelte reactivity
   let containerEl;
-  let scrollY      = 0;
-  let containerTop = 0;
-  let winH         = 600;
-  let ticking      = false;   // rAF guard
+  let panel1El;
+  let panel2El;
+  let ticking = false;
+  let cleanup;
 
-  $: localScroll = Math.max(0, scrollY - containerTop);
-  $: slideIndex  = localScroll / winH;
+  function frame() {
+    if (!containerEl || !panel1El || !panel2El) return;
+    const rect     = containerEl.getBoundingClientRect();
+    const scrolled = -rect.top;
+    const total    = rect.height - window.innerHeight;
+    const p = Math.max(0, Math.min(1, scrolled / total)); // 0→1 over 200vh
 
-  $: panel1Y       = Math.min(0, -(slideIndex - 0.5) * 100 / 0.5);
-  $: panel1Opacity = Math.max(0, 1 - (slideIndex - 0.5) * 2);
-  $: panel2Y       = Math.max(0, (1 - (slideIndex - 0.5) / 0.5) * 100);
-  $: panel2Opacity = Math.min(1, Math.max(0, (slideIndex - 0.5) * 2));
+    // Hold profiles visible for first 25%, transition during 25%→75%, tweets hold after 75%
+    const HOLD   = 0.25;
+    const TRANS  = 0.50; // transition window width
+
+    const tp = Math.max(0, Math.min(1, (p - HOLD) / TRANS)); // 0→1 during transition
+
+    // Panel 1 (profiles): stationary → slides up → gone
+    panel1El.style.transform = `translateY(${-tp * 100}%)`;
+    panel1El.style.opacity   = String(Math.max(0, 1 - tp * 2));
+
+    // Panel 2 (tweets): hidden → slides up from bottom → stationary
+    panel2El.style.transform = `translateY(${(1 - tp) * 100}%)`;
+    panel2El.style.opacity   = String(Math.min(1, tp * 2));
+
+    ticking = false;
+  }
 
   function onScroll() {
     if (!ticking) {
-      requestAnimationFrame(() => {
-        scrollY = window.scrollY;
-        ticking = false;
-      });
+      requestAnimationFrame(frame);
       ticking = true;
     }
   }
 
   onMount(() => {
-    winH = window.innerHeight;
-    scrollY = window.scrollY;
-    if (containerEl) containerTop = containerEl.getBoundingClientRect().top + window.scrollY;
+    frame(); // set initial state immediately
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', () => {
-      winH = window.innerHeight;
-      if (containerEl) containerTop = containerEl.getBoundingClientRect().top + window.scrollY;
-    });
+    window.addEventListener('resize', onScroll,  { passive: true });
+    cleanup = () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
   });
 
-  onDestroy(() => {
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('scroll', onScroll);
-    }
-  });
+  onDestroy(() => cleanup?.());
 </script>
 
 <!--
-  The outer wrapper reserves 3 × 100vh of scroll space:
-  • 1st vh  = profiles fade in & hold
-  • 2nd vh  = transition to tweets
-  • 3rd vh  = tweets hold then fade out before releasing page scroll
+  The outer wrapper reserves 2 × 100vh of scroll space.
+  The sticky window clips both panels. JS drives their transform directly.
 -->
 <div
   class="tp-spacer"
   bind:this={containerEl}
-  style="height: 300vh;"
+  style="height: 200vh;"
 >
   <div class="tp-sticky">
 
-    <!-- Permanent black background — never moves -->
+    <!-- Permanent black background — never moves -->
     <div class="tp-bg"></div>
 
-    <!-- Fade-out overlay at very end so tweets don't bleed into next section -->
-    <div class="tp-fade-out" style="opacity: {Math.max(0, (slideIndex - 1.7) * 4)};"></div>
-
-    <!-- Panel 1: Profiles ──────────────────────────────────────────────── -->
+    <!-- Panel 1: Profiles -->
     <div
       class="tp-panel profiles-panel"
-      style="transform: translateY({panel1Y}vh); opacity: {panel1Opacity};"
+      bind:this={panel1El}
     >
       <div class="profiles-wrapper">
         {#each profiles as profile}
@@ -127,10 +129,10 @@
       </div>
     </div>
 
-    <!-- Panel 2: Tweets ────────────────────────────────────────────────── -->
+    <!-- Panel 2: Tweets -->
     <div
       class="tp-panel tweets-panel"
-      style="transform: translateY({panel2Y}vh); opacity: {panel2Opacity};"
+      bind:this={panel2El}
     >
       <div class="tweets-wrapper">
         {#each enrichedTweets as tweet}
@@ -221,15 +223,6 @@
     z-index: 0;
   }
 
-  /* Black fade-out overlay that covers everything at the very end */
-  .tp-fade-out {
-    position: absolute;
-    inset: 0;
-    background: #000;
-    z-index: 20;          /* Above the panels */
-    pointer-events: none;
-  }
-
   /* Both panels sit on top of the background, centred */
   .tp-panel {
     position: absolute;
@@ -240,10 +233,21 @@
     padding: 2rem;
     color: #fff;
     will-change: transform, opacity;
-    /* NO CSS transition here — JS drives position directly each rAF,
-       any CSS transition would fight the JS and cause jank */
     z-index: 1;
     overflow-y: auto;
+  }
+
+  /* Explicit initial states — profiles visible, tweets hidden below screen */
+  .profiles-panel {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .tweets-panel {
+    opacity: 0;
+    transform: translateY(100%);
+    align-items: flex-start;  /* content from top so it's visible as panel slides in */
+    padding-top: 2rem;
   }
 
   /* ── Icons (must be :global because they come from {@html}) ─────────────── */
