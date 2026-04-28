@@ -33,14 +33,6 @@
     if (!svgEl) return;
     while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
 
-    // Filter defs for shimmering effect
-    const defs = el('defs', {});
-    const filter = el('filter', { id: 'hd', x: '-8%', y: '-8%', width: '116%', height: '116%' });
-    filter.appendChild(el('feTurbulence', { type: 'fractalNoise', baseFrequency: '0.04', numOctaves: '3', result: 'n' }));
-    filter.appendChild(el('feDisplacementMap', { in: 'SourceGraphic', in2: 'n', scale: '4', xChannelSelector: 'R', yChannelSelector: 'G' }));
-    defs.appendChild(filter);
-    svgEl.appendChild(defs);
-
     const W = svgEl.clientWidth || 600;
     const H = Math.max(400, data.length * 35);
     svgEl.style.height = `${H}px`;
@@ -49,14 +41,16 @@
     const pw = W - ml - mr;
     const ph = H - mt - mb;
 
+    const minSentiment = 0.7;
     const maxSentiment = 1.0;
+    const range = maxSentiment - minSentiment;
     
-    const xPx = val => ml + (val / maxSentiment) * pw;
+    const xPx = val => ml + (Math.max(0, val - minSentiment) / range) * pw;
     const yPx = i => mt + (i + 0.5) * (ph / data.length);
     const barHeight = (ph / data.length) * 0.7;
 
     // Grid lines
-    for (let v = 0; v <= 1; v += 0.2) {
+    for (let v = 0.7; v <= 1.0; v += 0.1) {
       const x = xPx(v);
       line(svgEl, x, mt, x, mt + ph, 'rgba(255,255,255,0.08)');
       text(svgEl, x, mt + ph + 20, v.toFixed(1), {
@@ -82,7 +76,6 @@
         fill: 'rgba(0, 108, 254, 0.15)',
         stroke: PRIMARY_COLOR,
         'stroke-width': '1.5',
-        filter: 'url(#hd)',
         rx: 3,
         style: 'cursor: pointer; transition: opacity 0.2s;'
       });
