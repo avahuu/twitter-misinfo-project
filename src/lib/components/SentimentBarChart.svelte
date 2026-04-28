@@ -16,7 +16,7 @@
     { topic: "California", sentiment: 0.760, count: 367 }
   ];
 
-  const PRIMARY_COLOR = '#006CFE';
+  const PRIMARY_COLOR = '#38bdf8';
   
   let containerEl;
   let svgEl;
@@ -73,7 +73,7 @@
 
       const rect = el('rect', {
         x: ml, y, width: Math.max(0, w), height: barHeight,
-        fill: 'rgba(0, 108, 254, 0.15)',
+        fill: 'rgba(56, 189, 248, 0.15)',
         stroke: PRIMARY_COLOR,
         'stroke-width': '1.5',
         rx: 3,
@@ -176,7 +176,7 @@
     border-radius: 4px;
     font-size: 0.8rem;
     pointer-events: none;
-    border: 1px solid #006CFE;
+    border: 1px solid #38bdf8;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
   }
 </style>
