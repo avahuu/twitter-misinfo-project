@@ -82,49 +82,45 @@ export const tweets = [
   {
     id: 5,
     profileId: "sydney",
-    time: "Apr 26",
-    content_zh: "不管政治立场如何，在危难时刻保护家人的本能才是人性的真实体现。",
-    content_en: "Regardless of political stance, the instinct to protect one's family in moments of crisis is the true reflection of human nature.",
-    views: "150K",
-    replies: "400",
-    reposts: "1.8K",
-    likes: "10K",
-    bookmarks: "80"
+    time: "Apr 25",
+    content_zh: "特勤局否决了川普返回继续发表演说，今晚演讲取消，未来30天重新排期，老头估计郁闷了，特么刚刚咋就忘了fight fight fight了呢",
+    content_en: "The Secret Service vetoed Trump's return to finish the speech. Tonight is canceled; rescheduled for within 30 days. The old man’s gotta be frustrated—how the hell did he forget to "fight, fight, fight" just now?",
+    views: "4.3K",
+    replies: "6",
+    reposts: "2",
+    likes: "29"
   },
   {
     id: 6,
     profileId: "xixing",
     time: "Apr 25",
-    content_zh: "川普政府官员在枪击现场表现出的镇定和保护家人的本能，值得称赞。",
-    content_en: "The calmness and instinct to protect family shown by Trump administration officials at the shooting scene deserve praise.",
-    views: "95K",
-    replies: "200",
-    reposts: "800",
-    likes: "5K",
-    bookmarks: "30"
+    content_zh: "⚠️⚠️⚠️突发：川普总统今晚举行白宫记者晚会发生前，一名加州枪手试图执行暗杀被抓。...在随后的记者会上，川普揭示白宫这座建筑并不安全，这就是为何他要重修，'我们需要此前没有见过的安全标准..我们需要白宫舞厅，军队需要它！'。 ",
+    content_en: "⚠️⚠️⚠️ BREAKING: A California gunman was caught tonight attempting to assassinate President Trump before the WHCD...At a later presser, Trump revealed the building is unsafe—hence his renovation plans: "We need security standards like never before... We need a White House Ballroom; the Military needs it!",
+    views: "2.9K"
+    replies: "3",
+    reposts: "16",
+    likes: "44"
   },
   {
     id: 7,
     profileId: "cao",
-    time: "Apr 25",
-    content_zh: "这次枪击事件是对美国保守派力量的一次严重挑衅，我们必须保持警惕。",
-    content_en: "This shooting incident is a serious provocation against American conservative forces, we must remain vigilant.",
-    views: "300K",
-    replies: "1.2K",
-    reposts: "5K",
-    likes: "25K",
-    bookmarks: "400"
+    time: "Apr 26",
+    content_zh: "一个女宾乘混乱偷走两瓶酒。连瓶酒都偷，其道德已低到怎么可能在乎真实和客观这些媒体原则。美国的记者都烂到这种地步，哪还是第四权，已变成特权霉体。",
+    content_en: " a female guest who took advantage of the chaos to steal two bottles of wine. Stealing bottles of wine—her morals are so low that how could she possibly care about principles like truth and objectivity in journalism. American journalists have rotted to this extent; they're no longer the fourth estate, they've turned into a privileged moldy media.",
+    views: "14K",
+    replies: "38",
+    reposts: "173",
+    likes: "487"
   },
   {
     id: 8,
     profileId: "sydney",
-    time: "Apr 26",
-    content_zh: "祈祷所有在场人员平安，愿逝者安息。暴力永远解决不了问题。",
-    content_en: "Praying for the safety of everyone present, may the deceased rest in peace. Violence never solves problems.",
-    views: "180K",
-    replies: "450",
-    reposts: "1.5K",
-    likes: "12K",
-    bookmarks: "150"
+    time: "Apr 25",
+    content_zh: "突发！川普正在参加白宫记者协会晚宴的时候，现场突然传来枪响",
+    content_en: "Breaking News! Gunshots suddenly rang out at the White House Correspondents' Association Dinner while Trump was attending",
+    views: "59.7K",
+    replies: "27",
+    reposts: "123",
+    likes: "152"
   }
 ];
