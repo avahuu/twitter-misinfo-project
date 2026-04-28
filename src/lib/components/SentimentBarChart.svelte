@@ -134,7 +134,14 @@
 
 <div class="chart-wrapper" bind:this={containerEl}>
   <div class="header">
-    <h2>Topic Sentiment Analysis (@usa912152217)</h2>
+    <h2>Topic Sentiment Analysis</h2>
+    <div class="user-profile">
+      <img src="{base}/twitter_profiles_img/xixing_headshto.jpg" alt="Xi Xing Xiao Bao 2.0" />
+      <div class="user-info">
+        <span class="user-name">Xi Xing Xiao Bao 2.0</span>
+        <span class="user-handle">@usa912152217</span>
+      </div>
+    </div>
     <p>Average sentiment score per topic (0 = Negative, 1 = Positive). Hover over bars for details.</p>
   </div>
   <svg class="chart-svg" bind:this={svgEl}></svg>
@@ -152,10 +159,42 @@
     margin-bottom: 2.5rem;
   }
   .header h2 {
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 1rem 0;
     color: #fff;
     font-size: 1.6rem;
     font-weight: 800;
+  }
+  .user-profile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 999px;
+  }
+  .user-profile img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid #38bdf8;
+    object-fit: cover;
+  }
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+  .user-name {
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.1;
+  }
+  .user-handle {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.75rem;
   }
   .header p {
     margin: 0 0 1.5rem 0;

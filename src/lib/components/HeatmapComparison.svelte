@@ -129,6 +129,15 @@
 	<!-- Fixed Flex Layout to prevent clipping on small screens -->
 	<div class="heatmap-sticky">
 		
+		<svg width="0" height="0" style="position:absolute;">
+			<defs>
+				<filter id="hd-line" x="-20%" y="-20%" width="140%" height="140%">
+					<feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="n"/>
+					<feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/>
+				</filter>
+			</defs>
+		</svg>
+
 		<div class="header">
 			<h2>Temporal Posting Patterns</h2>
 			<p>Comparing frequency of posts across users (Scale max: {globalMax})</p>
@@ -158,9 +167,19 @@
 						<div class="corner"></div> <!-- row header spacer -->
 						<div class="annot-arc-top" style="grid-column: 2 / span 12; opacity: {progress >= 0.1 && progress < 0.4 ? 1 : 0};">
 							<span>Election Cycle</span>
+							<svg width="100%" height="100%" style="position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible;">
+								<line x1="0" y1="5" x2="100%" y2="5" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-dasharray="8 5" filter="url(#hd-line)" />
+								<line x1="1" y1="0" x2="1" y2="12" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" filter="url(#hd-line)" />
+								<line x1="99%" y1="0" x2="99%" y2="12" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" filter="url(#hd-line)" />
+							</svg>
 						</div>
 						<div class="annot-arc-top" style="grid-column: 14 / span 11; opacity: {progress >= 0.4 && progress < 0.7 ? 1 : 0};">
 							<span>Post-Inauguration</span>
+							<svg width="100%" height="100%" style="position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible;">
+								<line x1="0" y1="5" x2="100%" y2="5" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-dasharray="8 5" filter="url(#hd-line)" />
+								<line x1="1" y1="0" x2="1" y2="12" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" filter="url(#hd-line)" />
+								<line x1="99%" y1="0" x2="99%" y2="12" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" filter="url(#hd-line)" />
+							</svg>
 						</div>
 						<div class="corner"></div> <!-- right legend spacer -->
 						
@@ -193,6 +212,11 @@
 							{#if dayIdx === 5}
 								<div class="annot-weekends" style="grid-row: 8 / span 2; grid-column: -2 / -1; opacity: {progress >= 0.7 ? 1 : 0};">
 									<span>Less posts<br/>during<br/>weekends</span>
+									<svg width="100%" height="100%" style="position: absolute; top: 0; left: 0; pointer-events: none; overflow: visible;">
+										<line x1="0" y1="0" x2="0" y2="100%" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-dasharray="8 5" filter="url(#hd-line)" />
+										<line x1="0" y1="1" x2="10" y2="1" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" filter="url(#hd-line)" />
+										<line x1="0" y1="99%" x2="10" y2="99%" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" filter="url(#hd-line)" />
+									</svg>
 								</div>
 							{:else if dayIdx !== 6}
 								<div class="corner"></div>
@@ -404,57 +428,27 @@
 	.annot-arc-top {
 		position: relative;
 		height: 10px;
-		margin-top: 18px;
-		margin-bottom: 2px;
+		margin-top: 20px;
+		margin-bottom: 4px;
 		transition: opacity 0.4s ease-in-out;
 		will-change: opacity;
-		/* Horizontal bar */
-		border-top: 1.5px dashed rgba(255, 255, 255, 0.55);
-		border-left: none;
-		border-right: none;
-		border-bottom: none;
-		border-radius: 0;
-	}
-
-	/* Left tick */
-	.annot-arc-top::before {
-		content: '';
-		position: absolute;
-		top: -1px;
-		left: 0;
-		width: 1px;
-		height: 8px;
-		background: rgba(255, 255, 255, 0.75);
-	}
-
-	/* Right tick */
-	.annot-arc-top::after {
-		content: '';
-		position: absolute;
-		top: -1px;
-		right: 0;
-		width: 1px;
-		height: 8px;
-		background: rgba(255, 255, 255, 0.75);
 	}
 
 	.annot-arc-top span {
 		position: absolute;
-		top: -22px;
+		top: -24px;
 		/* Center label over the full span */
 		left: 0;
 		right: 0;
 		text-align: center;
 		font-family: 'Montserrat', sans-serif;
-		font-size: 0.8rem;
+		font-size: 0.95rem;
 		font-weight: 500;
+		color: rgba(255, 255, 255, 0.9);
 		letter-spacing: 0.5px;
-		color: rgba(255, 255, 255, 0.95);
 		white-space: nowrap;
 	}
 
-	/* Vertical blockquote bar — spans the Sat + Sun rows on the right
-	   A vertical accent encodes a row grouping (day axis), not a time range */
 	.annot-weekends {
 		position: relative;
 		margin-left: 8px;
@@ -464,21 +458,16 @@
 		align-items: center; /* vertically center the label */
 		transition: opacity 0.4s ease-in-out;
 		will-change: opacity;
-		/* Vertical accent bar on the left edge */
-		border-left: 1.5px dashed rgba(255, 255, 255, 0.55);
-		border-top: none;
-		border-right: none;
-		border-bottom: none;
 	}
 
 	.annot-weekends span {
 		position: absolute;
-		left: 12px;
+		left: 18px;
 		font-family: 'Montserrat', sans-serif;
-		font-size: 0.78rem;
+		font-size: 0.95rem;
 		font-weight: 500;
 		letter-spacing: 0.4px;
-		color: rgba(255, 255, 255, 0.85);
+		color: rgba(255, 255, 255, 0.9);
 		white-space: nowrap;
 		line-height: 1.5;
 	}
