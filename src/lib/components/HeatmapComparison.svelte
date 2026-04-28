@@ -2,6 +2,13 @@
 	import { onMount, onDestroy } from 'svelte';
 	import heatmapData from '../data/heatmapData.json';
 	import * as d3 from 'd3';
+	import { base } from '$app/paths';
+
+	const avatarMap: Record<string, string> = {
+		'CaoChangqing': `${base}/twitter_profiles_img/cao_headshot.jpg`,
+		'SydneyDaddy1': `${base}/twitter_profiles_img/sydney_headshot.jpg`,
+		'usa912152217': `${base}/twitter_profiles_img/xixing_headshto.jpg`
+	};
 
 	const rawMonths = heatmapData.months;
 	const rawAccounts = heatmapData.accounts;
@@ -143,6 +150,7 @@
 			{#each accounts as acct, accountIndex}
 				<div class="heatmap-wrapper">
 					<div class="heatmap-header">
+						<img class="acct-avatar" src={avatarMap[acct.account]} alt={acct.account} />
 						<h3 class="account-title">@{acct.account}</h3>
 					</div>
 					<div class="grid-container" style="--total-cols: {months.length};">
@@ -309,13 +317,25 @@
 
 	.heatmap-header {
 		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-left: 35px; /* Align to grid offset */
+	}
+
+	.acct-avatar {
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		border: 1.5px solid rgba(56, 189, 248, 0.4);
+		object-fit: cover;
 	}
 
 	.account-title {
 		font-family: 'Montserrat', sans-serif;
 		font-size: clamp(0.8rem, 2vh, 1.1rem);
 		color: #38bdf8;
-		margin: 0 0 0 35px; /* Align to grid offset */
+		margin: 0;
 		font-weight: 600;
 	}
 
@@ -389,7 +409,7 @@
 		transition: opacity 0.4s ease-in-out;
 		will-change: opacity;
 		/* Horizontal bar */
-		border-top: 1px solid rgba(255, 255, 255, 0.75);
+		border-top: 1.5px dashed rgba(255, 255, 255, 0.55);
 		border-left: none;
 		border-right: none;
 		border-bottom: none;
@@ -445,7 +465,7 @@
 		transition: opacity 0.4s ease-in-out;
 		will-change: opacity;
 		/* Vertical accent bar on the left edge */
-		border-left: 2px solid rgba(255, 255, 255, 0.6);
+		border-left: 1.5px dashed rgba(255, 255, 255, 0.55);
 		border-top: none;
 		border-right: none;
 		border-bottom: none;
