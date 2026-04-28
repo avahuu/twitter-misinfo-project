@@ -82,39 +82,39 @@
 		}
 	});
 
-	// Custom 9-step cyan palette matching the project's dark tech theme
+	// Custom 9-step palette where darker = more posts
 	const blues: string[] = [
-		'rgba(56, 189, 248, 0.04)', // 1 - faint
-		'rgba(56, 189, 248, 0.12)', // 2
-		'rgba(56, 189, 248, 0.25)', // 3
-		'rgba(56, 189, 248, 0.40)', // 4
-		'rgba(56, 189, 248, 0.55)', // 5
-		'rgba(56, 189, 248, 0.75)', // 6
-		'#0ea5e9',                  // 7
-		'#38bdf8',                  // 8 - primary brand color
-		'#bae6fd',                  // 9 - near white (highest)
+		'#f0f9ff', // 1 - very light blue
+		'#e0f2fe', // 2
+		'#bae6fd', // 3
+		'#7dd3fc', // 4
+		'#38bdf8', // 5 - primary brand color
+		'#0284c7', // 6
+		'#0369a1', // 7
+		'#075985', // 8
+		'#082f49', // 9 - darkest blue (highest)
 	];
 	const blueScale = d3.scaleQuantize<string>()
 		.domain([0, globalMax])
 		.range(blues);
 
-	// Pre-calculate legend steps (reversed so brightest is at the top)
+	// Pre-calculate legend steps (reversed so darkest is at the top)
 	const reversedLegend = [...blues].reverse().map((color, idx) => {
 		const actBucket = 8 - idx;
 		const threshold = Math.round(actBucket * (globalMax / 9));
 		return { color, label: threshold };
 	});
 
-	// Heatmap mapping: Discrete shades of cyan
+	// Heatmap mapping
 	function getColor(val: number) {
-		if (!val || val === 0) return 'rgba(255,255,255,0.02)'; // 0 posts → faint dark outline
+		if (!val || val === 0) return '#ffffff'; // 0 posts → white
 		return blueScale(val);
 	}
 	
 	function getTextColor(val: number) {
 		const ratio = Math.min(val / globalMax, 1);
-		// On dark background, text is white, except for the very brightest cells where it flips to dark blue
-		return ratio > 0.8 ? '#082f49' : '#ffffff';
+		// On light cells, text is dark. On dark cells (high values), text is white.
+		return ratio > 0.5 ? '#ffffff' : '#082f49';
 	}
 
 	// Format "2024-03" → "24 03" (compact, no redundant century)
@@ -140,7 +140,7 @@
 			<div class="legend-title">Posts</div>
 			<div class="legend-bar">
 				{#each reversedLegend as bin, idx (idx)}
-					<div class="legend-swatch" style="background-color: {bin.label === 0 ? 'rgba(255,255,255,0.02)' : bin.color};">
+					<div class="legend-swatch" style="background-color: {bin.label === 0 ? '#ffffff' : bin.color};">
 						<span class="legend-label">{bin.label}</span>
 					</div>
 				{/each}
