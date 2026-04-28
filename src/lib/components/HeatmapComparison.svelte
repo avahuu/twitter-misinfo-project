@@ -129,7 +129,7 @@
 	<!-- Fixed Flex Layout to prevent clipping on small screens -->
 	<div class="heatmap-sticky">
 		
-		<svg width="0" height="0" style="position:absolute;">
+		<svg width="1" height="1" style="position:absolute; pointer-events:none; visibility:hidden;">
 			<defs>
 				<filter id="hd-line" x="-20%" y="-20%" width="140%" height="140%">
 					<feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="n"/>
