@@ -1,5 +1,6 @@
 <script>
   import { onMount } from 'svelte';
+  import { base } from '$app/paths';
 
   const data = [
     { topic: "Russia", sentiment: 0.949, count: 366 },
