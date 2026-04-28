@@ -2,29 +2,55 @@
   import { onMount } from 'svelte';
 
   const ACCOUNTS = [
-    { key: 'CaoChangqing', label: 'Cao Changqing', handle: '@CaoChangqing' },
-    { key: 'SydneyDaddy1', label: 'Sydney Daddy',  handle: '@SydneyDaddy1' },
-    { key: 'usa912152217', label: 'Xi Xing Xiao Bao 2.0', handle: '@usa912152217' },
+    {
+      key: 'CaoChangqing',
+      label: 'Cao Changqing',
+      handle: '@CaoChangqing',
+      avatar: '/twitter_profiles_img/cao_headshot.jpg'
+    },
+    {
+      key: 'SydneyDaddy1',
+      label: 'Sydney Daddy',
+      handle: '@SydneyDaddy1',
+      avatar: '/twitter_profiles_img/sydney_headshot.jpg'
+    },
+    {
+      key: 'usa912152217',
+      label: 'Xi Xing Xiao Bao 2.0',
+      handle: '@usa912152217',
+      avatar: '/twitter_profiles_img/xixing_headshto.jpg'
+    },
   ];
 
   const HOUR_LABELS = Array.from({ length: 13 }, (_, i) => i * 2);
   const BLUE   = '#38bdf8';
-  const NORMAL = 'rgba(160,170,185,0.3)';
+  const NORMAL = 'rgba(160,170,185,0.28)';
 
   let data = null;
-  let svgEls    = {};
+  let svgEls     = {};
   let containerEl;
+  let counts     = {}; // key → { normal, burst }
 
   // tooltip state
   let tooltip = { visible: false, x: 0, y: 0, text: '', date: '', burstCount: 0, burstDur: 0 };
-
-  // per-chart burst point lookup (for hover)
-  let burstCache = {}; // key → [{px, py, text, date, burstCount, burstDur}]
+  let burstCache = {};
 
   // ── fetch + draw ──────────────────────────────────────────────────────────
   onMount(async () => {
     const res = await fetch('/burstData.json');
     data = await res.json();
+
+    // pre-compute counts for display outside SVG
+    for (const acc of ACCOUNTS) {
+      if (data[acc.key]) {
+        counts[acc.key] = {
+          normal: data[acc.key].normal.length,
+          burst:  data[acc.key].burst.length
+        };
+      }
+    }
+    counts = { ...counts }; // trigger reactivity
+
     drawAll();
 
     const ro = new ResizeObserver(() => { if (data) drawAll(); });
@@ -38,19 +64,18 @@
     }
   }
 
-  // ── main draw function ────────────────────────────────────────────────────
+  // ── main draw ─────────────────────────────────────────────────────────────
   function draw(key, { normal, burst }) {
     const svg = svgEls[key];
     if (!svg) return;
     while (svg.firstChild) svg.removeChild(svg.firstChild);
 
     const W  = svg.clientWidth  || 900;
-    const H  = svg.clientHeight || 220;
-    const ml = 52, mr = 16, mt = 12, mb = 42;
+    const H  = svg.clientHeight || 264;
+    const ml = 52, mr = 16, mt = 12, mb = 44;
     const pw = W - ml - mr;
     const ph = H - mt - mb;
 
-    // scale
     const allMs  = normal.map(p=>p[0]).concat(burst.map(p=>p[0]));
     const minMs  = Math.min(...allMs);
     const maxMs  = Math.max(...allMs);
@@ -58,7 +83,7 @@
     const xPx = ms   => ml + ((ms - minMs) / xRange) * pw;
     const yPx = hour => mt + (hour / 24) * ph;
 
-    // y grid
+    // y grid + labels
     for (const h of HOUR_LABELS) {
       const y = yPx(h);
       line(svg, ml, y, ml + pw, y, 'rgba(255,255,255,0.05)');
@@ -76,9 +101,9 @@
       line(svg, x, mt, x, mt + ph, 'rgba(255,255,255,0.05)');
       const lbl = `${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}`;
       const xt = el('text', {
-        x, y: mt + ph + 8,
+        x, y: mt + ph + 9,
         'font-size': '8.5', 'text-anchor': 'end', fill: 'rgba(255,255,255,0.35)',
-        transform: `rotate(-40, ${x}, ${mt + ph + 8})`
+        transform: `rotate(-40, ${x}, ${mt + ph + 9})`
       });
       xt.textContent = lbl;
       svg.appendChild(xt);
@@ -87,14 +112,14 @@
 
     // normal dots
     for (const [ms, hr] of normal) {
-      circle(svg, xPx(ms), yPx(hr), 1.6, NORMAL);
+      circle(svg, xPx(ms), yPx(hr), 1.8, NORMAL, 1);
     }
 
-    // burst dots — store pixel positions for hover
+    // burst dots with stroke (so stacked dots show depth)
     const cache = [];
     for (const [ms, hr, tw, tc, dur] of burst) {
       const px = xPx(ms), py = yPx(hr);
-      const c = circle(svg, px, py, 4, BLUE, 0.75);
+      burstCircle(svg, px, py);
       const d = new Date(ms);
       const dateStr = d.toLocaleString('en-US', {
         month:'short', day:'numeric', year:'numeric',
@@ -104,23 +129,11 @@
     }
     burstCache[key] = cache;
 
-    // legend
-    const lx = ml + pw;
-    const ly = mt + 8;
-    circle(svg, lx - 80, ly, 2, 'rgba(160,170,185,0.55)');
-    text(svg, lx - 72, ly + 4, `Normal (${normal.length})`, {
-      'font-size': '9', fill: 'rgba(255,255,255,0.45)'
-    });
-    circle(svg, lx - 80, ly + 16, 4, BLUE, 0.8);
-    text(svg, lx - 72, ly + 20, `Burst (${burst.length})`, {
-      'font-size': '9', fill: BLUE
-    });
-
     // axis borders
     line(svg, ml, mt, ml, mt + ph, 'rgba(255,255,255,0.12)');
     line(svg, ml, mt + ph, ml + pw, mt + ph, 'rgba(255,255,255,0.12)');
 
-    // invisible hit area for mouse events
+    // transparent hit area for hover
     const hitRect = el('rect', {
       x: ml, y: mt, width: pw, height: ph,
       fill: 'transparent', style: 'cursor:crosshair'
@@ -130,7 +143,7 @@
     svg.appendChild(hitRect);
   }
 
-  // ── hover handler ─────────────────────────────────────────────────────────
+  // ── hover ─────────────────────────────────────────────────────────────────
   function onMouseMove(e, key, svg) {
     const rect  = svg.getBoundingClientRect();
     const mx    = e.clientX - rect.left;
@@ -143,11 +156,11 @@
       if (d < bestDist) { bestDist = d; best = pt; }
     }
 
-    if (best && bestDist < 20) {
+    if (best && bestDist < 22) {
       tooltip = {
         visible: true,
-        x: e.clientX + 14,
-        y: e.clientY - 10,
+        x: e.clientX + 16,
+        y: e.clientY - 12,
         text: best.tw,
         date: best.date,
         burstCount: best.burstCount,
@@ -166,9 +179,24 @@
     return e;
   }
   function circle(svg, cx, cy, r, fill, opacity=1) {
-    const c = el('circle', { cx, cy, r, fill, opacity });
-    svg.appendChild(c);
-    return c;
+    svg.appendChild(el('circle', { cx, cy, r, fill, opacity }));
+  }
+  // Burst dot with outer glow ring + filled center so stacked dots are visible
+  function burstCircle(svg, cx, cy) {
+    // outer ring (stroke only) — shows when dots overlap
+    svg.appendChild(el('circle', {
+      cx, cy, r: 5,
+      fill: 'none',
+      stroke: BLUE,
+      'stroke-width': '0.8',
+      opacity: '0.45'
+    }));
+    // filled center
+    svg.appendChild(el('circle', {
+      cx, cy, r: 3.5,
+      fill: BLUE,
+      opacity: '0.78'
+    }));
   }
   function line(svg, x1, y1, x2, y2, stroke) {
     svg.appendChild(el('line', { x1, y1, x2, y2, stroke, 'stroke-width': 0.5 }));
@@ -180,17 +208,11 @@
   }
 </script>
 
-<!-- Global tooltip (fixed to viewport) -->
+<!-- Fixed tooltip -->
 {#if tooltip.visible}
-  <div
-    class="bt-tooltip"
-    style="left:{tooltip.x}px; top:{tooltip.y}px"
-    role="tooltip"
-  >
+  <div class="bt-tooltip" style="left:{tooltip.x}px; top:{tooltip.y}px" role="tooltip">
     <div class="tt-date">{tooltip.date}</div>
-    <div class="tt-meta">
-      Burst session · {tooltip.burstCount} tweets · {tooltip.burstDur} min
-    </div>
+    <div class="tt-meta">Burst session · {tooltip.burstCount} tweets · {tooltip.burstDur} min</div>
     <div class="tt-text">{tooltip.text || '(no text available)'}</div>
   </div>
 {/if}
@@ -199,59 +221,64 @@
   <div class="bt-header">
     <h2 class="bt-title">Posting Behavior · Burst Timeline</h2>
     <p class="bt-subtitle">
-      Each dot is one tweet (x = date, y = hour of day UTC).
-      <span class="burst-label">Bright blue dots</span> fall within
-      a detected burst session — a short window of unusually rapid posting.
-      Hover over blue dots to see the tweet.
+      Each dot is one tweet (x = date, y = UTC hour of day).
+      <span class="burst-label">Blue dots</span> fall within a detected burst session —
+      an unusually rapid sequence of posts. Hover a blue dot to read the tweet.
     </p>
   </div>
 
   {#each ACCOUNTS as acc}
+    {@const c = counts[acc.key]}
     <div class="bt-chart-block">
+
+      <!-- Header row: avatar + name + stat pills -->
       <div class="bt-chart-label">
-        <span class="bt-name">{acc.label}</span>
-        <span class="bt-handle">{acc.handle}</span>
+        <img class="bt-avatar" src={acc.avatar} alt={acc.label} />
+        <div class="bt-identity">
+          <span class="bt-name">{acc.label}</span>
+          <span class="bt-handle">{acc.handle}</span>
+        </div>
+        {#if c}
+          <div class="bt-stats">
+            <span class="stat stat-normal">
+              <span class="stat-dot normal-dot"></span>
+              Normal &nbsp;<strong>{c.normal.toLocaleString()}</strong>
+            </span>
+            <span class="stat stat-burst">
+              <span class="stat-dot burst-dot"></span>
+              Burst &nbsp;<strong>{c.burst.toLocaleString()}</strong>
+            </span>
+          </div>
+        {/if}
       </div>
+
       <svg class="bt-svg" bind:this={svgEls[acc.key]}></svg>
     </div>
   {/each}
 </div>
 
 <style>
-  /* ── Tooltip (fixed to viewport) ──────────────────────────────── */
+  /* ── Tooltip ───────────────────────────────────────────────────── */
   .bt-tooltip {
     position: fixed;
     z-index: 9999;
     max-width: 320px;
-    background: rgba(10, 20, 35, 0.97);
-    border: 1px solid rgba(56, 189, 248, 0.4);
+    background: rgba(8,18,32,0.97);
+    border: 1px solid rgba(56,189,248,0.4);
     border-radius: 0.6rem;
     padding: 0.7rem 0.9rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 0.78rem;
     color: #e2e8f0;
     pointer-events: none;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-    line-height: 1.45;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+    line-height: 1.5;
   }
-  .tt-date {
-    font-size: 0.7rem;
-    color: #38bdf8;
-    font-weight: 600;
-    margin-bottom: 0.2rem;
-  }
-  .tt-meta {
-    font-size: 0.68rem;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 0.45rem;
-  }
-  .tt-text {
-    color: #f1f5f9;
-    font-size: 0.78rem;
-    word-break: break-word;
-  }
+  .tt-date  { font-size: 0.7rem; color: #38bdf8; font-weight: 600; margin-bottom: 0.15rem; }
+  .tt-meta  { font-size: 0.67rem; color: rgba(255,255,255,0.38); margin-bottom: 0.4rem; }
+  .tt-text  { color: #f1f5f9; font-size: 0.77rem; word-break: break-word; }
 
-  /* ── Layout ────────────────────────────────────────────────────── */
+  /* ── Wrapper ───────────────────────────────────────────────────── */
   .bt-wrapper {
     width: 100%;
     background: #050a12;
@@ -260,10 +287,7 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     box-sizing: border-box;
   }
-  .bt-header {
-    max-width: 960px;
-    margin: 0 auto 2.5rem;
-  }
+  .bt-header { max-width: 960px; margin: 0 auto 2.5rem; }
   .bt-title {
     font-size: 1.6rem;
     font-weight: 800;
@@ -275,12 +299,13 @@
   }
   .bt-subtitle {
     font-size: 0.85rem;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,0.43);
     margin: 0;
-    line-height: 1.6;
+    line-height: 1.65;
   }
   .burst-label { color: #38bdf8; font-weight: 600; }
 
+  /* ── Chart card ────────────────────────────────────────────────── */
   .bt-chart-block {
     max-width: 960px;
     margin: 0 auto 2rem;
@@ -289,14 +314,67 @@
     border-radius: 0.75rem;
     overflow: hidden;
   }
+
+  /* Header row */
   .bt-chart-label {
     display: flex;
-    align-items: baseline;
-    gap: 0.5rem;
-    padding: 0.8rem 1.25rem 0.55rem;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
-  .bt-name   { font-weight: 700; font-size: 0.95rem; }
-  .bt-handle { font-size: 0.8rem; color: rgba(255,255,255,0.35); }
-  .bt-svg    { display: block; width: 100%; height: 220px; }
+  .bt-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid rgba(56,189,248,0.3);
+    flex-shrink: 0;
+  }
+  .bt-identity {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    flex: 1;
+  }
+  .bt-name   { font-weight: 700; font-size: 0.92rem; line-height: 1.2; }
+  .bt-handle { font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+
+  /* Stat pills */
+  .bt-stats {
+    display: flex;
+    gap: 0.6rem;
+    flex-shrink: 0;
+  }
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .stat-normal {
+    background: rgba(160,170,185,0.1);
+    color: rgba(255,255,255,0.5);
+  }
+  .stat-burst {
+    background: rgba(56,189,248,0.1);
+    color: #38bdf8;
+  }
+  .stat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .normal-dot { background: rgba(160,170,185,0.6); }
+  .burst-dot  {
+    background: #38bdf8;
+    box-shadow: 0 0 0 2px rgba(56,189,248,0.25);
+  }
+
+  /* SVG — 20% taller than original 220px */
+  .bt-svg { display: block; width: 100%; height: 264px; }
 </style>
