@@ -2,10 +2,6 @@
 
 **Live Website:** [https://avahuu.github.io/twitter-misinfo-project/](https://avahuu.github.io/twitter-misinfo-project/)
 
-This is a starter template for students to use for their final projects. It's built in Svelte and pulls in the main content from a Google Doc as HTML allowing the use for shortcodes to embed multimedia.
-
-Any images embedded in the Google Doc will automatically be brought in as base64-encoded data URLs. This makes it easy so that no external image hosting or asset management is required, however with lots of images it can slow your webpage and it's recommend to use the image shortcode to host your images externally on CDNs.
-
 # Multimedia 2026 Class Project Template (WIP)
 
 This is a starter template for students to use for their final projects. It's built in Svelte and pulls in the main content from a Google Doc as HTML allowing the use for shortcodes to embed multimedia.
