@@ -1,0 +1,114 @@
+
+> multimedia-template-2026@0.0.1 build
+> vite build
+
+vite v7.3.1 building ssr environment for production...
+transforming...
+1:02:21 PM [vite-plugin-svelte] src/lib/components/KeywordVenn.svelte:448:10 'mouseover' event must be accompanied by 'focus' event
+https://svelte.dev/e/a11y_mouse_events_have_key_events
+446:            style="cursor:{b.r<30?'zoom-in':'pointer'}" role="button" tabindex="0">
+447:           
+448:           <circle cx={b.x} cy={b.y} r={b.r}
+                                                ^
+449:             on:mouseover={() => hoverBubble = b} on:mouseout={() => hoverBubble = null}
+450:             fill={selCirc.dim} stroke={selCirc.color} stroke-width="1.2" stroke-dasharray="5 3" filter="url(#hd)" opacity="0.85"/>
+1:02:21 PM [vite-plugin-svelte] src/lib/components/KeywordVenn.svelte:448:10 'mouseout' event must be accompanied by 'blur' event
+https://svelte.dev/e/a11y_mouse_events_have_key_events
+446:            style="cursor:{b.r<30?'zoom-in':'pointer'}" role="button" tabindex="0">
+447:           
+448:           <circle cx={b.x} cy={b.y} r={b.r}
+                                                ^
+449:             on:mouseover={() => hoverBubble = b} on:mouseout={() => hoverBubble = null}
+450:             fill={selCirc.dim} stroke={selCirc.color} stroke-width="1.2" stroke-dasharray="5 3" filter="url(#hd)" opacity="0.85"/>
+1:02:21 PM [vite-plugin-svelte] src/lib/components/KeywordVenn.svelte:533:15 Unused CSS selector ".back-row"
+https://svelte.dev/e/css_unused_selector
+531: 
+532:   .controls-wrap { position: relative; min-height: 3.5rem; margin-bottom: 20px; }
+533:   .legend-row, .back-row { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+                             ^
+534: 
+535:   .acct-pill {
+✓ 223 modules transformed.
+Unknown output options: codeSplitting. Allowed options: amd, assetFileNames, banner, chunkFileNames, compact, dir, dynamicImportInCjs, entryFileNames, esModule, experimentalMinChunkSize, exports, extend, externalImportAssertions, externalImportAttributes, externalLiveBindings, file, footer, format, freeze, generatedCode, globals, hashCharacters, hoistTransitiveImports, importAttributesKey, indent, inlineDynamicImports, interop, intro, manualChunks, minifyInternalExports, name, noConflict, onlyExplicitManualChunks, outro, paths, plugins, preserveModules, preserveModulesRoot, reexportProtoFromExternal, sanitizeFileName, sourcemap, sourcemapBaseUrl, sourcemapDebugIds, sourcemapExcludeSources, sourcemapFile, sourcemapFileNames, sourcemapIgnoreList, sourcemapPathTransform, strict, systemNullSetters, validate, virtualDirname
+rendering chunks...
+vite v7.3.1 building client environment for production...
+transforming...
+1:02:24 PM [vite-plugin-svelte] src/lib/components/KeywordVenn.svelte:448:10 'mouseover' event must be accompanied by 'focus' event
+https://svelte.dev/e/a11y_mouse_events_have_key_events
+446:            style="cursor:{b.r<30?'zoom-in':'pointer'}" role="button" tabindex="0">
+447:           
+448:           <circle cx={b.x} cy={b.y} r={b.r}
+                                                ^
+449:             on:mouseover={() => hoverBubble = b} on:mouseout={() => hoverBubble = null}
+450:             fill={selCirc.dim} stroke={selCirc.color} stroke-width="1.2" stroke-dasharray="5 3" filter="url(#hd)" opacity="0.85"/>
+1:02:24 PM [vite-plugin-svelte] src/lib/components/KeywordVenn.svelte:448:10 'mouseout' event must be accompanied by 'blur' event
+https://svelte.dev/e/a11y_mouse_events_have_key_events
+446:            style="cursor:{b.r<30?'zoom-in':'pointer'}" role="button" tabindex="0">
+447:           
+448:           <circle cx={b.x} cy={b.y} r={b.r}
+                                                ^
+449:             on:mouseover={() => hoverBubble = b} on:mouseout={() => hoverBubble = null}
+450:             fill={selCirc.dim} stroke={selCirc.color} stroke-width="1.2" stroke-dasharray="5 3" filter="url(#hd)" opacity="0.85"/>
+1:02:24 PM [vite-plugin-svelte] src/lib/components/KeywordVenn.svelte:533:15 Unused CSS selector ".back-row"
+https://svelte.dev/e/css_unused_selector
+531: 
+532:   .controls-wrap { position: relative; min-height: 3.5rem; margin-bottom: 20px; }
+533:   .legend-row, .back-row { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+                             ^
+534: 
+535:   .acct-pill {
+✓ 765 modules transformed.
+Unknown output options: codeSplitting. Allowed options: amd, assetFileNames, banner, chunkFileNames, compact, dir, dynamicImportInCjs, entryFileNames, esModule, experimentalMinChunkSize, exports, extend, externalImportAssertions, externalImportAttributes, externalLiveBindings, file, footer, format, freeze, generatedCode, globals, hashCharacters, hoistTransitiveImports, importAttributesKey, indent, inlineDynamicImports, interop, intro, manualChunks, minifyInternalExports, name, noConflict, onlyExplicitManualChunks, outro, paths, plugins, preserveModules, preserveModulesRoot, reexportProtoFromExternal, sanitizeFileName, sourcemap, sourcemapBaseUrl, sourcemapDebugIds, sourcemapExcludeSources, sourcemapFile, sourcemapFileNames, sourcemapIgnoreList, sourcemapPathTransform, strict, systemNullSetters, validate, virtualDirname
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                         0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/client/.vite/manifest.json                       4.36 kB │ gzip:  0.81 kB
+.svelte-kit/output/client/_app/immutable/assets/2.7ZUPcDkZ.css     17.56 kB │ gzip:  4.08 kB
+.svelte-kit/output/client/_app/immutable/assets/0.BOqdc7Ju.css    231.73 kB │ gzip: 31.68 kB
+.svelte-kit/output/client/_app/immutable/chunks/CqkleIqs.js         0.12 kB │ gzip:  0.13 kB
+.svelte-kit/output/client/_app/immutable/entry/start.KLgPp-gj.js    0.12 kB │ gzip:  0.11 kB
+.svelte-kit/output/client/_app/immutable/chunks/Cq6o2YX3.js         0.53 kB │ gzip:  0.34 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.BMTzuRw6.js        0.59 kB │ gzip:  0.36 kB
+.svelte-kit/output/client/_app/immutable/chunks/BPjCPDlh.js         0.63 kB │ gzip:  0.39 kB
+.svelte-kit/output/client/_app/immutable/chunks/D5qqCkdN.js         1.03 kB │ gzip:  0.63 kB
+.svelte-kit/output/client/_app/immutable/chunks/PPVm8Dsz.js         1.23 kB │ gzip:  0.72 kB
+.svelte-kit/output/client/_app/immutable/chunks/kWdWMTIt.js         1.49 kB │ gzip:  0.66 kB
+.svelte-kit/output/client/_app/immutable/chunks/CBsWJ-aJ.js         1.59 kB │ gzip:  0.83 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.CMFfvqfn.js        3.24 kB │ gzip:  1.42 kB
+.svelte-kit/output/client/_app/immutable/chunks/CnK3L8Ss.js         3.26 kB │ gzip:  1.54 kB
+.svelte-kit/output/client/_app/immutable/entry/app.DZXFfWSW.js      4.21 kB │ gzip:  1.93 kB
+.svelte-kit/output/client/_app/immutable/chunks/H2gRy9nl.js         5.76 kB │ gzip:  2.67 kB
+.svelte-kit/output/client/_app/immutable/chunks/CiWHwbT0.js         6.41 kB │ gzip:  2.93 kB
+.svelte-kit/output/client/_app/immutable/chunks/CnCxWwy4.js        20.35 kB │ gzip:  8.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/D85g9cM-.js        23.12 kB │ gzip:  9.13 kB
+.svelte-kit/output/client/_app/immutable/chunks/DnlA1LUH.js        80.63 kB │ gzip: 24.44 kB
+.svelte-kit/output/client/_app/immutable/chunks/CO2HPr3t.js        87.88 kB │ gzip: 31.48 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.CRYetvYV.js      171.32 kB │ gzip: 61.01 kB
+✓ built in 2.86s
+Registering component: BumpChart.svelte
+Registering component: BurstTimeline.svelte
+Registering component: CoolNewFeature.svelte
+Registering component: DatawrapperEmbed.svelte
+Registering component: EmbedCode.svelte
+Registering component: Flourish.svelte
+Registering component: HeatmapComparison.svelte
+Registering component: ImageEmbed.svelte
+Registering component: KeywordVenn.svelte
+Registering component: Scrolly.svelte
+Registering component: TimelineWaterfall.svelte
+Registering component: TwitterProfiles.svelte
+Registering component: VideoEmbed.svelte
+
+node:internal/event_target:1118
+  process.nextTick(() => { throw err; });
+                           ^
+Error: 404 /twitter_profiles_img/xixing_bannet.jpeg does not begin with `base`, which is configured in `paths.base` and can be imported from `$app/paths` - see https://svelte.dev/docs/kit/configuration#paths for more info (linked from /twitter-misinfo-project/)
+To suppress or handle this error, implement `handleHttpError` in https://svelte.dev/docs/kit/configuration#prerender
+    at file:///Users/avahu/projects/twitter-misinfo-project/node_modules/@sveltejs/kit/src/core/config/options.js:221:13
+    at file:///Users/avahu/projects/twitter-misinfo-project/node_modules/@sveltejs/kit/src/core/postbuild/prerender.js:75:25
+    at visit (file:///Users/avahu/projects/twitter-misinfo-project/node_modules/@sveltejs/kit/src/core/postbuild/prerender.js:235:4)
+    at Object.fn (file:///Users/avahu/projects/twitter-misinfo-project/node_modules/@sveltejs/kit/src/core/postbuild/prerender.js:224:22)
+    at dequeue (file:///Users/avahu/projects/twitter-misinfo-project/node_modules/@sveltejs/kit/src/core/postbuild/queue.js:32:42)
+    at file:///Users/avahu/projects/twitter-misinfo-project/node_modules/@sveltejs/kit/src/core/postbuild/queue.js:41:7
+
+Node.js v25.8.0

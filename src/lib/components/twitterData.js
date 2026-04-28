@@ -1,10 +1,12 @@
+import { base } from '$app/paths';
+
 export const profiles = [
   {
     id: "xixing",
     name: "西行小宝2.0",
     handle: "@usa912152217",
-    banner: "/twitter_profiles_img/xixing_bannet.jpeg",
-    avatar: "/twitter_profiles_img/xixing_headshto.jpg",
+    banner: `${base}/twitter_profiles_img/xixing_bannet.jpeg`,
+    avatar: `${base}/twitter_profiles_img/xixing_headshto.jpg`,
     bio: "西行小宝X，发布同名电报重要新闻和时政分析。",
     following: "3,477",
     followers: "16.5K",
@@ -14,8 +16,8 @@ export const profiles = [
     id: "cao",
     name: "曹長青",
     handle: "@CaoChangqing",
-    banner: "/twitter_profiles_img/cao_banner.jpeg",
-    avatar: "/twitter_profiles_img/cao_headshot.jpg",
+    banner: `${base}/twitter_profiles_img/cao_banner.jpeg`,
+    avatar: `${base}/twitter_profiles_img/cao_headshot.jpg`,
     bio: "美籍華裔保守派評論員。",
     following: "6",
     followers: "364.5K",
@@ -25,8 +27,8 @@ export const profiles = [
     id: "sydney",
     name: "悉尼奶爸 SydneyDaddy 雪梨奶爸 🇦🇺🇮🇱",
     handle: "@SydneyDaddy1",
-    banner: "/twitter_profiles_img/sydney_banner.jpeg",
-    avatar: "/twitter_profiles_img/sydney_headshot.jpg",
+    banner: `${base}/twitter_profiles_img/sydney_banner.jpeg`,
+    avatar: `${base}/twitter_profiles_img/sydney_headshot.jpg`,
     bio: "Youtuber: http://bit.ly/2tJ7Rui 堂堂正正做人，踏踏实实要饭 不差钱的打发点呗",
     following: "2,593",
     followers: "114.3K",

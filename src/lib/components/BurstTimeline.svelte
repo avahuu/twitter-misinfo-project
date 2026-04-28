@@ -1,24 +1,25 @@
 <script>
   import { onMount } from 'svelte';
+  import { base } from '$app/paths';
 
   const ACCOUNTS = [
     {
       key: 'CaoChangqing',
       label: 'Cao Changqing',
       handle: '@CaoChangqing',
-      avatar: '/twitter_profiles_img/cao_headshot.jpg'
+      avatar: `${base}/twitter_profiles_img/cao_headshot.jpg`
     },
     {
       key: 'SydneyDaddy1',
       label: 'Sydney Daddy',
       handle: '@SydneyDaddy1',
-      avatar: '/twitter_profiles_img/sydney_headshot.jpg'
+      avatar: `${base}/twitter_profiles_img/sydney_headshot.jpg`
     },
     {
       key: 'usa912152217',
       label: 'Xi Xing Xiao Bao 2.0',
       handle: '@usa912152217',
-      avatar: '/twitter_profiles_img/xixing_headshto.jpg'
+      avatar: `${base}/twitter_profiles_img/xixing_headshto.jpg`
     },
   ];
 
@@ -37,7 +38,7 @@
 
   // ── fetch + draw ──────────────────────────────────────────────────────────
   onMount(async () => {
-    const res = await fetch('/burstData.json');
+    const res = await fetch(`${base}/burstData.json`);
     data = await res.json();
 
     // pre-compute counts for display outside SVG
