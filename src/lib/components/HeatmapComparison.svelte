@@ -204,7 +204,6 @@
 	.scrolly-container {
 		position: relative;
 		height: 350vh; 
-		background-color: #03050c; 
 		font-family: 'Montserrat', sans-serif;
 	}
 

@@ -514,7 +514,6 @@
 
 <style>
   .kv {
-    background: #03050c;
     padding: 4vh 2vw 8vh;
     font-family: 'Montserrat', sans-serif;
     position: relative;

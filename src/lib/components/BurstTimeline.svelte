@@ -182,21 +182,13 @@
   function circle(svg, cx, cy, r, fill, opacity=1) {
     svg.appendChild(el('circle', { cx, cy, r, fill, opacity }));
   }
-  // Burst dot with outer glow ring + filled center so stacked dots are visible
+  // Burst dot with transparent fill and solid stroke
   function burstCircle(svg, cx, cy) {
-    // outer ring (stroke only) — shows when dots overlap
     svg.appendChild(el('circle', {
-      cx, cy, r: 5,
-      fill: 'none',
+      cx, cy, r: 4.5,
+      fill: 'rgba(56, 189, 248, 0.15)',
       stroke: BLUE,
-      'stroke-width': '0.8',
-      opacity: '0.45'
-    }));
-    // filled center
-    svg.appendChild(el('circle', {
-      cx, cy, r: 3.5,
-      fill: BLUE,
-      opacity: '0.78'
+      'stroke-width': '1.5'
     }));
   }
   function line(svg, x1, y1, x2, y2, stroke) {
@@ -282,7 +274,6 @@
   /* ── Wrapper ───────────────────────────────────────────────────── */
   .bt-wrapper {
     width: 100%;
-    background: #050a12;
     color: #fff;
     padding: 3rem 2rem 4rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -376,8 +367,9 @@
   }
   .normal-dot { background: rgba(160,170,185,0.6); }
   .burst-dot  {
-    background: #38bdf8;
-    box-shadow: 0 0 0 2px rgba(56,189,248,0.25);
+    background: rgba(56,189,248,0.15);
+    border: 1.5px solid #38bdf8;
+    box-sizing: border-box;
   }
 
   /* SVG — 20% taller than original 220px */
