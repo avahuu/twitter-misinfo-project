@@ -77,13 +77,11 @@
         'font-size': '13', 'text-anchor': 'end', fill: '#fff', 'font-weight': '500'
       });
 
-      // bar
       const rect = el('rect', {
         x: ml, y, width: Math.max(0, w), height: barHeight,
         fill: 'rgba(0, 108, 254, 0.15)',
         stroke: PRIMARY_COLOR,
         'stroke-width': '1.5',
-        'stroke-dasharray': '5 3',
         filter: 'url(#hd)',
         rx: 3,
         style: 'cursor: pointer; transition: opacity 0.2s;'
