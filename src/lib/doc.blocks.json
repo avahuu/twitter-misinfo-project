@@ -32,6 +32,15 @@
   },
   {
     "type": "shortcode",
+    "name": "SentimentBarChart",
+    "attrs": {}
+  },
+  {
+    "type": "html",
+    "html": "<p>Publishers, owners and other corporate executives, especially advertising sales executives, could try to use their powers over journalists to influence how news is reported and published. For this reason, journalists traditionally relied on top management to create and maintain a &quot;firewall&quot; between the news and other departments in a news organization to prevent undue influence on the news department.</p>"
+  },
+  {
+    "type": "shortcode",
     "name": "BurstTimeline",
     "attrs": {}
   },
