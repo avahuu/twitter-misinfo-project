@@ -124,9 +124,9 @@
 	<!-- Fixed Flex Layout to prevent clipping on small screens -->
 	<div class="heatmap-sticky">
 		
-		<div class="title-wrap">
-			<h2 class="section-title">Temporal Posting Patterns</h2>
-			<p class="subtitle">Comparing frequency of posts across users (Scale max: {globalMax})</p>
+		<div class="header">
+			<h2>Temporal Posting Patterns</h2>
+			<p>Comparing frequency of posts across users (Scale max: {globalMax})</p>
 		</div>
 		
 		<div class="main-layout">
@@ -221,25 +221,21 @@
 		overflow: hidden;
 	}
 
-	.title-wrap {
+	.header {
 		text-align: center;
-		margin-bottom: 2vh;
-		flex-shrink: 0; /* Protect title from squishing */
+		margin-bottom: 2.5rem;
+		flex-shrink: 0;
 	}
-
-	.section-title {
-		font-family: 'Montserrat', sans-serif;
-		font-size: clamp(1.2rem, 3vh, 2rem);
+	.header h2 {
+		margin: 0 0 0.5rem 0;
+		color: #fff;
+		font-size: 1.6rem;
 		font-weight: 800;
-		color: #ffffff;
-		margin: 0;
 	}
-
-	.subtitle {
-		font-size: clamp(0.7rem, 1.5vh, 1rem);
-		color: rgba(255, 255, 255, 0.6);
-		margin-top: 0.5vh;
-		margin-bottom: 0;
+	.header p {
+		margin: 0 0 1.5rem 0;
+		color: rgba(255,255,255,0.6);
+		font-size: 0.9rem;
 	}
 
 	.main-layout {

@@ -130,7 +130,7 @@
 
 <div class="chart-wrapper" bind:this={containerEl}>
   <div class="header">
-    <h3>Topic Sentiment Analysis (@usa912152217)</h3>
+    <h2>Topic Sentiment Analysis (@usa912152217)</h2>
     <p>Average sentiment score per topic (0 = Negative, 1 = Positive). Hover over bars for details.</p>
   </div>
   <svg class="chart-svg" bind:this={svgEl}></svg>
@@ -141,16 +141,17 @@
     width: 100%;
     max-width: 800px;
     margin: 2rem auto;
-    background: #0b1120;
-    padding: 2rem;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,0.1);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   }
-  .header h3 {
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .header h2 {
     margin: 0 0 0.5rem 0;
     color: #fff;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
+    font-weight: 800;
   }
   .header p {
     margin: 0 0 1.5rem 0;

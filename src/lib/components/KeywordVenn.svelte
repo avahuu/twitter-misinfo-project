@@ -361,14 +361,14 @@
 <!-- ── Unified Morphing Canvas ────────────────────────────────────────────────── -->
 <div class="kv-head-wrap">
   {#if view === 'venn'}
-    <div class="kv-head" transition:fade={{duration:250}}>
-      <h2 class="kv-title">Keyword Overlap Across Accounts</h2>
-      <p class="kv-sub">Hover to see shared keywords · click any circle to explore</p>
+    <div class="header" transition:fade={{duration:250}}>
+      <h2>Keyword Overlap Across Accounts</h2>
+      <p>Hover to see shared keywords · click any circle to explore</p>
     </div>
   {:else if selCirc}
-    <div class="kv-head" transition:fade={{duration:250}}>
-      <h2 class="kv-title" style="color:{selCirc.color}">{selCirc.handle}</h2>
-      <p class="kv-sub">{selCirc.posts.toLocaleString()} posts · bubble size = % of tweets · click to zoom</p>
+    <div class="header" transition:fade={{duration:250}}>
+      <h2 style="color:{selCirc.color}">{selCirc.handle}</h2>
+      <p>{selCirc.posts.toLocaleString()} posts · bubble size = % of tweets · click to zoom</p>
     </div>
   {/if}
 </div>
@@ -522,9 +522,21 @@
   }
 
   .kv-head-wrap { margin-bottom: 24px; padding-top: 1rem; }
-  .kv-head { text-align: center; }
-  .kv-title { font-size: clamp(1.2rem,3vw,2rem); font-weight:800; color:#fff; margin:0; }
-  .kv-sub { font-size:.78rem; color:rgba(255,255,255,.38); margin-top:.5rem; }
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .header h2 {
+    margin: 0 0 0.5rem 0;
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 800;
+  }
+  .header p {
+    margin: 0 0 1.5rem 0;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
+  }
 
   /* Interactive Elements Reset */
   svg g:focus, svg circle:focus { outline: none; }

@@ -219,9 +219,9 @@
 {/if}
 
 <div class="bt-wrapper" bind:this={containerEl}>
-  <div class="bt-header">
-    <h2 class="bt-title">Posting Behavior · Burst Timeline</h2>
-    <p class="bt-subtitle">
+  <div class="header">
+    <h2>Posting Behavior · Burst Timeline</h2>
+    <p>
       Each dot is one tweet (x = date, y = UTC hour of day).
       <span class="burst-label">Blue dots</span> fall within a detected burst session —
       an unusually rapid sequence of posts. Hover a blue dot to read the tweet.
@@ -288,20 +288,24 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     box-sizing: border-box;
   }
-  .bt-header { max-width: 960px; margin: 0 auto 2.5rem; }
-  .bt-title {
+  
+  .header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .header h2 {
+    margin: 0 0 0.5rem 0;
+    color: #fff;
     font-size: 1.6rem;
     font-weight: 800;
-    margin: 0 0 0.5rem;
-    background: linear-gradient(90deg, #38bdf8, #818cf8);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
-  .bt-subtitle {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.43);
-    margin: 0;
+  .header p {
+    margin: 0 0 1.5rem 0;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
     line-height: 1.65;
   }
   .burst-label { color: #38bdf8; font-weight: 600; }
