@@ -75,41 +75,39 @@
 		}
 	});
 
-	// Custom 9-step blue palette: dark navy → deep blue → vivid blue → bright blue → pale sky → near white
-	// Matches the reference screenshot's color ramp
+	// Custom 9-step cyan palette matching the project's dark tech theme
 	const blues: string[] = [
-		'#e8f4ff', // 1 – near white (lowest)
-		'#b8dcff', // 2 – pale sky
-		'#6db8ff', // 3 – light blue
-		'#3a91f0', // 4 – medium blue
-		'#1a6be8', // 5 – vivid blue
-		'#0f4bbf', // 6 – strong blue
-		'#0a2a6e', // 7 – deep blue
-		'#061540', // 8 – navy
-		'#03060f', // 9 – near black (highest)
+		'rgba(56, 189, 248, 0.04)', // 1 - faint
+		'rgba(56, 189, 248, 0.12)', // 2
+		'rgba(56, 189, 248, 0.25)', // 3
+		'rgba(56, 189, 248, 0.40)', // 4
+		'rgba(56, 189, 248, 0.55)', // 5
+		'rgba(56, 189, 248, 0.75)', // 6
+		'#0ea5e9',                  // 7
+		'#38bdf8',                  // 8 - primary brand color
+		'#bae6fd',                  // 9 - near white (highest)
 	];
 	const blueScale = d3.scaleQuantize<string>()
 		.domain([0, globalMax])
 		.range(blues);
 
-	// Pre-calculate legend steps (reversed so darkest is at the top)
+	// Pre-calculate legend steps (reversed so brightest is at the top)
 	const reversedLegend = [...blues].reverse().map((color, idx) => {
 		const actBucket = 8 - idx;
 		const threshold = Math.round(actBucket * (globalMax / 9));
 		return { color, label: threshold };
 	});
 
-	// Heatmap mapping: Discrete shades of blue
+	// Heatmap mapping: Discrete shades of cyan
 	function getColor(val: number) {
-		if (!val || val === 0) return '#ffffff'; // 0 posts → white
+		if (!val || val === 0) return 'rgba(255,255,255,0.02)'; // 0 posts → faint dark outline
 		return blueScale(val);
 	}
 	
 	function getTextColor(val: number) {
 		const ratio = Math.min(val / globalMax, 1);
-		// White text on dark cells, dark text on light cells
-		// Threshold raised slightly because our palette is darker overall
-		return ratio > 0.35 ? '#ffffff' : '#0a1628';
+		// On dark background, text is white, except for the very brightest cells where it flips to dark blue
+		return ratio > 0.8 ? '#082f49' : '#ffffff';
 	}
 
 	// Format "2024-03" → "24 03" (compact, no redundant century)
@@ -135,7 +133,7 @@
 			<div class="legend-title">Posts</div>
 			<div class="legend-bar">
 				{#each reversedLegend as bin, idx (idx)}
-					<div class="legend-swatch" style="background-color: {bin.label === 0 ? '#ffffff' : bin.color};">
+					<div class="legend-swatch" style="background-color: {bin.label === 0 ? 'rgba(255,255,255,0.02)' : bin.color};">
 						<span class="legend-label">{bin.label}</span>
 					</div>
 				{/each}
@@ -377,7 +375,7 @@
 		transform: scale(1.4);
 		z-index: 10;
 		box-shadow: 0 0 8px rgba(0,0,0,0.9);
-		border: 1px solid white;
+		border: 1px solid #38bdf8;
 		border-radius: 4px;
 	}
 
